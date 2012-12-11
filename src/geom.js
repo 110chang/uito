@@ -188,14 +188,14 @@
 			if (!geom.Point.identify(point)) {
 				 throw "arguments must be geom.Point.";
 			}
-			return (point.y - this.y) / (point.x - this.x);
+			return (point.y - this.y) / (point.x - this.x) * -1;
 		},
 		angleBetween: function (point, asRadian) {
 			if (asRadian === undefined) { asRadian = true; }
 			if (!geom.Point.identify(point)) {
 				 throw "arguments must be geom.Point.";
 			}
-			var radian = Math.atan2(point.y - this.y, point.x - this.x);
+			var radian = Math.atan2(point.y - this.y, point.x - this.x) * -1;
 			return (asRadian) ? radian : radian * 180 / Math.PI;
 		},
 		distanceTo: function (point) {

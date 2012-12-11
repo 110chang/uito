@@ -18,6 +18,20 @@
 			var child, i;
 			
 			child = function () {
+				var goupstream = (function (_self) {
+					return function (obj, arguments) {
+						if (obj.ancestor && obj.ancestor.prototype !== Object.prototype) {
+							if (obj.ancestor.prototype && obj.ancestor.prototype.hasOwnProperty('__construct')) {
+								//console.log(obj.ancestor.prototype);
+								obj.ancestor.prototype.__construct.apply(_self, arguments);
+							}
+							goupstream(obj.ancestor, arguments);
+						}
+					};
+				}(this));
+				
+				goupstream(parent, arguments);
+				
 				if (child._super && child._super.hasOwnProperty('__construct')) {
 					child._super.__construct.apply(this, arguments);
 				}
@@ -25,13 +39,15 @@
 					child.prototype.__construct.apply(this, arguments);
 				}
 			}
+			
 			parent = parent || Object;
 			
 			F.prototype = parent.prototype;
 			child.prototype = new F();
+			child.ancestor = parent;
 			child._super = parent.prototype;
 			child.prototype.constructor = child;
-			
+						
 			child.proxy = function (func) {
 				var self = this;
 				return (function () {
@@ -60,6 +76,7 @@
 					child.prototype[i] = props[i];
 				}
 			}
+			
 			return child;
 		};
 	})();
