@@ -91,7 +91,6 @@ module.exports = function(grunt) {
   
   grunt.registerTask('init', ['bower:install']);
   grunt.registerTask('server', ['middleman:server']);
-  grunt.registerTask('watch', ['watch']);
   grunt.registerTask('build', ['requirejs:compile', 'middleman:build', 'jshint']);
   // short hands
   grunt.registerTask('i', ['bower:install']);
