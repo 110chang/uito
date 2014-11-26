@@ -15,7 +15,7 @@ define([
       
       init: function(array){
         if(array.length === undefined || array.length < 1){
-          throw new Error('arguments must be array')
+          throw new Error('arguments must be array');
         }
         if (typeof array[0] ==='number') {
           var i = 0, a = [];
@@ -42,7 +42,7 @@ define([
       },
       set: function(value, i, j) {
         if (typeof value !== 'number') {
-          throw new Error('Invalid arguments.')
+          throw new Error('Invalid arguments.');
         }
         if (i === undefined) {
           i = 0;
@@ -52,11 +52,12 @@ define([
           j = 0;
           //throw new Error('arguments not enough');
         }
-        return this.structure[i][j] = value;
+        this.structure[i][j] = value;
+        return value;
       },
       isEqual: function(matrix) {
         if(!compare(matrix, this)){
-          throw new Error('arguments must be Matrix')
+          throw new Error('arguments must be Matrix');
         }
         var here  = this.structure,
           there = matrix.structure,
@@ -64,7 +65,7 @@ define([
         
         if(here.length === there.length && here[0].length === there[0].length) {
           for (i = 0; i < here.length; i++) {
-            for (var j = 0; j < here[i].length; j++){
+            for (j = 0; j < here[i].length; j++){
               if (here[i][j] !== there[i][j]) {
                 return false;
               }
@@ -79,7 +80,7 @@ define([
       },
       sum: function(matrix, destructive) {
         if(!compare(matrix, this)){
-          throw new Error('arguments must be Matrix')
+          throw new Error('arguments must be Matrix');
         }
         var r  = [],
           s1   = this.structure,
@@ -90,7 +91,7 @@ define([
         if (s1.length !== s2.length && s1[0].length !== s2[0].length) {
           throw new Error('Type of matrix is different.');
         }
-        for (var i = 0; i < s1.length; i++) {
+        for (i = 0; i < s1.length; i++) {
           r[i] = [];
           
           for (j = 0; j < s1[i].length; j++) {
@@ -106,7 +107,7 @@ define([
       },
       sub: function(matrix, destructive){
         if(!compare(matrix, this)){
-          throw new Error('arguments must be Matrix')
+          throw new Error('arguments must be Matrix');
         }
         var r  = [],
           s1   = this.structure,
@@ -132,7 +133,7 @@ define([
       },
       scalarMultiply: function(num){
         if(typeof num !== 'number'){
-          throw new Error('arguments must be Number')
+          throw new Error('arguments must be Number');
         }
         var r = [],
           s = this.structure,
@@ -207,7 +208,7 @@ define([
       },
       invert: function(matrix) {
         if(!compare(matrix, this)){
-          throw new Error('arguments must be Matrix')
+          throw new Error('arguments must be Matrix');
         }
         // To Do
       },
@@ -218,7 +219,7 @@ define([
         
         for (i = 0; i < s.length; i++) {
           str += '[ ';
-          for ( var j = 0; j < s[i].length; j++) {
+          for (j = 0; j < s[i].length; j++) {
             str += s[i][j];
             if (j < s[i].length - 1) {
               str += ', ';

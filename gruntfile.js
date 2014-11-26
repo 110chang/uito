@@ -18,16 +18,14 @@ module.exports = function(grunt) {
       }
     },
 
-    // 監視用の設定
     watch: {
       files: [
         './source/js/main.js',
         './source/js/main-*.js'
       ],
-      tasks: ['requirejs']
+      tasks: ['jshint']
     },
 
-    // requirejs用の設定
     requirejs: {
       compile: {
         options: {
@@ -41,7 +39,6 @@ module.exports = function(grunt) {
       }
     },
 
-    // middlemanの設定
     middleman: {
       options: {
         useBundle: true
@@ -61,16 +58,30 @@ module.exports = function(grunt) {
           command: 'build'
         }
       }
+    },
+
+    jshint: {
+      files: [
+        //'Gruntfile.js',
+        './source/js/**/*.js',
+        //'package.json',
+        '.jshintrc'
+      ],
+      options: {
+        jshintrc: '.jshintrc'
+      }
     }
   });
 
   //matchdepでpackage.jsonから"grunt-*"で始まる設定を読み込む
   require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
+  grunt.loadNpmTasks('grunt-contrib-jshint');
 
   grunt.registerTask('init', ['bower:install']);
   grunt.registerTask('server', ['middleman:server']);
   grunt.registerTask('build', ['requirejs:compile', 'middleman:build']);
   grunt.registerTask('i', ['bower:install']);
   grunt.registerTask('s', ['middleman:server']);
+  grunt.registerTask('w', ['jshint']);
   grunt.registerTask('b', ['requirejs:compile', 'middleman:build']);
 }

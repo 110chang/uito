@@ -13,7 +13,9 @@ define([], function() {
     for (; i < arguments.length; i++) {
       //console.log(arguments);
       for (prop in arguments[i]) {
-        o[prop] = arguments[i][prop];
+        if (arguments[i].hasOwnProperty(prop)) {
+          o[prop] = arguments[i][prop];
+        }
       }
     }
     F.prototype = o;

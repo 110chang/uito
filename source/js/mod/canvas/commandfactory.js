@@ -26,7 +26,7 @@ define([
 				if (typeof feature === 'function') {
 					return feature;
 				} else if (typeof feature === 'string') {
-					return this[feature].apply(this, arguments)
+					return this[feature].apply(this, arguments);
 				}
 			},
 			clear: function(width, height) {

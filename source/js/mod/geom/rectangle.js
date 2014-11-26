@@ -48,9 +48,9 @@ define([
       var lt = inherit(Point).init(rect.x, rect.y),
         rt = inherit(Point).init(rect.x + rect.width, rect.y),
         rb = inherit(Point).init(rect.x + rect.width, rect.y + rect.height),
-        rt = inherit(Point).init(rect.x, rect.y + rect.height);
+        lb = inherit(Point).init(rect.x, rect.y + rect.height);
       
-      return this.contain(lt) || this.contain(rt) || this.contain(rb) || this.contain(rt);
+      return this.contain(lt) || this.contain(rt) || this.contain(rb) || this.contain(lb);
     }
   };
 

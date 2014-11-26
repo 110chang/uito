@@ -73,7 +73,7 @@ define([
 				cnf.pad = {
 					left: cnf.pad,
 					top: cnf.pad
-				}
+				};
 			}//console.log(cnf.pad);
 			this.$el		 = $('#' + cnf.id);
 			this.$mask		 = this.$el.find(cnf.qMask);
@@ -172,7 +172,7 @@ define([
 				slides.push({
 					$el: $(this),
 					pos: pos
-				})
+				});
 			});
 			
 			this.first = cnf.repeat ? this.displayNum - 1 : 0;

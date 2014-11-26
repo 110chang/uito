@@ -9,7 +9,7 @@
 
 define([], function() {
   var _uid = -1;
-  
+
   var PubSub = {
     topics: null,
     
@@ -51,12 +51,12 @@ define([], function() {
           token: token,
           context: context,
           func: func
-        }
+        };
       } else if (typeof func === 'function') {
         subscriber = {
           token: token,
           func: func
-        }
+        };
       }
       
       this.topics[topic].push(subscriber);
@@ -64,10 +64,10 @@ define([], function() {
       return token;
     },
     unsubscribe: function() {
-      var i = 0;
+      var m, i = 0, token;
       
       if (arguments.length === 1) {
-        var token = arguments[0], m;
+        token = arguments[0];
         
         for (m in this.topics) {
           if (this.topics[m]) {

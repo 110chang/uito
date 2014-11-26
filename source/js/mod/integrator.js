@@ -40,7 +40,7 @@ define([
             this.departure[i] = this[i];
             this.distance[i] = _params[i] - this[i];
           } else {
-            throw new Erroe('There is no such property');
+            throw new Error('There is no such property');
           }
         }
         //this.destination = _params;
@@ -54,7 +54,7 @@ define([
         this.beginning = new Date();
         
         if (window.requestAnimationFrame === undefined) {
-          throw new Error('Require RAF.')
+          throw new Error('Require RAF.');
         } else {
           this._animationLoop();
           this.publish(Integrator.INTEGRATION_START);
@@ -65,26 +65,30 @@ define([
         var now = new Date(),
           timestamp = now.getTime() - this.beginning.getTime(),
           percent = timestamp / this.duration;
+        var i, val;
         
-        for (var i in this.departure) {
-          var val;
-          if (this.method === 'linear') {
-            val =  (this.distance[i] - this.departure[i]) * percent;
-          } else {
-            val = this[i] = $.easing[this.method](
-              percent,                 // x: percent
-              this.duration * percent, // t: current time
-              this.departure[i],       // b: beginning value
-              this.distance[i],        // c: change In value
-              this.duration            // d: duration
-            );
+        for (i in this.departure) {
+          if (this.departure.hasOwnProperty(i)) {
+            if (this.method === 'linear') {
+              val =  (this.distance[i] - this.departure[i]) * percent;
+            } else {
+              val = this[i] = $.easing[this.method](
+                percent,                 // x: percent
+                this.duration * percent, // t: current time
+                this.departure[i],       // b: beginning value
+                this.distance[i],        // c: change In value
+                this.duration            // d: duration
+              );
+            }
+            this[i] = val;
           }
-          this[i] = val;
         }
         if (percent >= 1) {
           console.log('integrate stop');
-          for (var i in this.departure) {
-            this[i] = this.destination[i];
+          for (i in this.departure) {
+            if (this.departure.hasOwnProperty(i)) {
+              this[i] = this.destination[i];
+            }
           }
           this.stop();
         } else {

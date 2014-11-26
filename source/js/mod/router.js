@@ -149,20 +149,21 @@ define([
       _onClick: function(e) {
         e.preventDefault();
         this.scrollTo(e.currentTarget.href.split(HASH_SEPERATOR)[1]);
-        return false
+        return false;
       },
       _onScroll: function(e) {
         //console.log('Router#_onScroll');
         var hashRewrite = $.proxy(this.hashRewrite, this),
-          hash, $e, leftIn, topIn;
+          hash, $e, leftIn, topIn, scrLeft, srcTop;
+
+        scrLeft = Screen.scrollLeft();
+        srcTop = Screen.scrollTop();
 
         $.each(this.hashlist, function(i) {
           hash = this.toString();
           $e = $('#' + hash);
-          leftIn = $e.offset().left - sp <= Screen.scrollLeft()
-            && Screen.scrollLeft() < $e.offset().left + $e.outerWidth() - sp;
-          topIn = $e.offset().top - sp <= Screen.scrollTop()
-            && Screen.scrollTop() < $e.offset().top + $e.outerHeight() - sp;
+          leftIn = $e.offset().left - sp <= scrLeft && scrLeft < $e.offset().left + $e.outerWidth() - sp;
+          topIn = $e.offset().top - sp <= srcTop && srcTop < $e.offset().top + $e.outerHeight() - sp;
 
           if (topIn) {
             if (hash !== location.hash.replace(HASH_SEPERATOR, '')) {

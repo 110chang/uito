@@ -31,8 +31,7 @@ define([
         
       } else if (arguments.length === 3) {
         // The first argument must be Point. Remainings must be Number.
-        if (!compare(Point, arguments[0] 
-          || typeof(arguments[1]) !== 'number' || typeof(arguments[2]) !== 'number')) {
+        if (!compare(Point, arguments[0] || typeof(arguments[1]) !== 'number' || typeof(arguments[2]) !== 'number')) {
           throw 'arguments invalid.';
         }
         this.start = arguments[0];
@@ -96,7 +95,7 @@ define([
       var AB = inherit(Vector).init(this.end.x - this.start.x, this.end.y - this.start.y),
         CD = inherit(Vector).init(segment.end.x - segment.start.x, segment.end.y - segment.start.y),
         AC = inherit(Vector).init(segment.start.x - this.start.x, segment.start.y - this.start.y),  
-        cpAB = CD.crossProduct(AB);
+        cpAB = CD.crossProduct(AB),
         cpAC = CD.crossProduct(AC);
       
       AB.scalarMultiply(cpAC / cpAB);
@@ -121,10 +120,10 @@ define([
       if (asRadian === undefined) { asRadian = true; }
       var radian = segment.getAngle() - this.getAngle();
       
-      return (asRadian) ? radian : radian * 180 / Math.PI;;
+      return (asRadian) ? radian : radian * 180 / Math.PI;
     },
     toString: function() {
-      return '( ' + this.start.x + ', ' + this.start.y + ' ) -> ( ' + + this.end.x + ', ' + this.end.y + ' )';
+      return '( ' + this.start.x + ', ' + this.start.y + ' ) -> ( ' + this.end.x + ', ' + this.end.y + ' )';
     }
   };
 

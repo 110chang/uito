@@ -69,7 +69,7 @@ define([
 				cnf.pad = {
 					left: cnf.pad,
 					top: cnf.pad
-				}
+				};
 			}
 			this.$el		 = $('#' + cnf.id);
 			this.$mask		 = this.$el.find(cnf.qMask);
@@ -274,7 +274,7 @@ define([
 			if (compare(Transition, transition)) {
 				this.transition = transition;
 			} else {
-				throw new Error('Arguments must be instance of Transition.')
+				throw new Error('Arguments must be instance of Transition.');
 			}
 			return this;
 		},

@@ -439,22 +439,24 @@ define("lib/almond", function(){});
 */
 
 define('mod/inherit',[], function() {
-	var inherit = function() {
-		var i = 0, o = {}, F = function() {}, child, prop;
-		
-		for (; i < arguments.length; i++) {
-			//console.log(arguments);
-			for (prop in arguments[i]) {
-				o[prop] = arguments[i][prop];
-			}
-		}
-		F.prototype = o;
-		child = new F();
-		
-		return child;
-	};
-	
-	return inherit;
+  var inherit = function() {
+    var i = 0, o = {}, F = function() {}, child, prop;
+    
+    for (; i < arguments.length; i++) {
+      //console.log(arguments);
+      for (prop in arguments[i]) {
+        if (arguments[i].hasOwnProperty(prop)) {
+          o[prop] = arguments[i][prop];
+        }
+      }
+    }
+    F.prototype = o;
+    child = new F();
+    
+    return child;
+  };
+  
+  return inherit;
 });
 
 /*
@@ -539,12 +541,13 @@ define('mod/nav/smoothscroll',[
     _onClick: function(e) {
       var el = e.currentTarget;
       var $target, targetOffset, scrollHeight, clientHeight;
+      var samePath = location.pathname.replace(/^\//,'') === el.pathname.replace(/^\//,'');
+      var sameHost = location.hostname === el.hostname;
 
       if (el.hash.match(/^#\W/)) {
         return;
       }
-      if (location.pathname.replace(/^\//,'') === el.pathname.replace(/^\//,'') 
-      && location.hostname === el.hostname) {
+      if (samePath && sameHost) {
         $target = $(el.hash);
         $target = $target.length && $target || $('[name=' + el.hash.slice(1) +']');
         if ($target.length) {
@@ -563,7 +566,7 @@ define('mod/nav/smoothscroll',[
     }
   };
 
-  if (_instance == null) {
+  if (_instance === null) {
     _instance = inherit(SmoothScroll).init();
   }
   
