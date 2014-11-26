@@ -439,22 +439,24 @@ define("lib/almond", function(){});
 */
 
 define('mod/inherit',[], function() {
-	var inherit = function() {
-		var i = 0, o = {}, F = function() {}, child, prop;
-		
-		for (; i < arguments.length; i++) {
-			//console.log(arguments);
-			for (prop in arguments[i]) {
-				o[prop] = arguments[i][prop];
-			}
-		}
-		F.prototype = o;
-		child = new F();
-		
-		return child;
-	};
-	
-	return inherit;
+  var inherit = function() {
+    var i = 0, o = {}, F = function() {}, child, prop;
+    
+    for (; i < arguments.length; i++) {
+      //console.log(arguments);
+      for (prop in arguments[i]) {
+        if (arguments[i].hasOwnProperty(prop)) {
+          o[prop] = arguments[i][prop];
+        }
+      }
+    }
+    F.prototype = o;
+    child = new F();
+    
+    return child;
+  };
+  
+  return inherit;
 });
 
 /*
@@ -539,12 +541,13 @@ define('mod/nav/smoothscroll',[
     _onClick: function(e) {
       var el = e.currentTarget;
       var $target, targetOffset, scrollHeight, clientHeight;
+      var samePath = location.pathname.replace(/^\//,'') === el.pathname.replace(/^\//,'');
+      var sameHost = location.hostname === el.hostname;
 
       if (el.hash.match(/^#\W/)) {
         return;
       }
-      if (location.pathname.replace(/^\//,'') === el.pathname.replace(/^\//,'') 
-      && location.hostname === el.hostname) {
+      if (samePath && sameHost) {
         $target = $(el.hash);
         $target = $target.length && $target || $('[name=' + el.hash.slice(1) +']');
         if ($target.length) {
@@ -563,12 +566,29 @@ define('mod/nav/smoothscroll',[
     }
   };
 
-  if (_instance == null) {
+  if (_instance === null) {
     _instance = inherit(SmoothScroll).init();
   }
   
   return _instance;
 });
+/*
+*
+*   Utils._ie
+*
+*/
+
+define('mod/utils/_ie',[], function() {
+  return (function() { 
+    var undef, v = 3, div = document.createElement('div');
+    while (
+      div.innerHTML = '<!--[if gt IE '+(++v)+']><i></i><![endif]-->',
+      div.getElementsByTagName('i')[0]
+    );
+    return v > 4 ? v : undef;
+  }());
+});
+
 /*
 *
 *   Utils.Browser r1
@@ -577,7 +597,9 @@ define('mod/nav/smoothscroll',[
 *
 */
 
-define('mod/browser',[], function() {
+define('mod/browser',[
+  'mod/utils/_ie'
+], function(_ie) {
   var _userAgent = navigator.userAgent,
     _is_IE       = /MSIE/.test(_userAgent),
     _is_iPhone   = /iPhone/.test(_userAgent),
@@ -587,16 +609,6 @@ define('mod/browser',[], function() {
     _is_windows  = /Win/.test(navigator.platform),
     _is_mac      = /Mac/.test(navigator.platform),
     _is_WebKit   = /Chrome|Safari/.test(_userAgent),
-// Detect IE in JS using conditional comments (lt IE10)
-// via http://james.padolsey.com/javascript/detect-ie-in-js-using-conditional-comments/
-    _ie = (function() { 
-      var undef, v = 3, div = document.createElement('div');
-      while (
-        div.innerHTML = '<!--[if gt IE '+(++v)+']><i></i><![endif]-->',
-        div.getElementsByTagName('i')[0]
-      );
-      return v > 4 ? v : undef;
-    }()),
     
     Browser = {
       IE          : _is_IE,

@@ -55,12 +55,6 @@ define([
 				
 				return this;
 			},
-			update : function (scrollTop) {
-				
-			},
-			resize : function () {
-				
-			},
 			_setHorizontalBar : function () {
 				this.$wrap.append(
 					$div.clone().addClass(this.hScrlCls)
@@ -82,8 +76,6 @@ define([
 				} else if (this.eitherSide === this.SET_INSIDE) {
 					this.$wrap.height(this.$el.height());
 					this.$el.height(this.$el.height() - hScrl.baseWidth);
-				} else {
-					
 				}
 			},
 			_setVerticalBar : function () {
@@ -107,8 +99,6 @@ define([
 				} else if (this.eitherSide === this.SET_INSIDE) {
 					this.$wrap.width(this.$el.width());
 					this.$el.width(this.$el.width() - vScrl.baseWidth);
-				} else {
-					
 				}
 			}
 		}),
@@ -179,8 +169,6 @@ define([
 					this._createVerticalBar();
 				} else if (this.direction === this.HORIZONTAL) {
 					this._createHorizontalBar();
-				} else {
-					
 				}
 				return this;
 			},
@@ -189,8 +177,6 @@ define([
 					this.scrollTop = this.$bar.position().top;	
 				} else if (this.direction === this.HORIZONTAL) {
 					this.scrollTop = this.$bar.position().left;
-				} else {
-					
 				}
 			},
 			onMouseMove : function (dx, dy) {	
@@ -208,8 +194,6 @@ define([
 							'left' : pos + dx
 						});
 					}
-				} else {
-					
 				}
 			},
 			onMouseUp : function () {	
@@ -217,12 +201,7 @@ define([
 					this.scrollTop = this.$bar.position().top;	
 				} else if (this.direction === this.HORIZONTAL) {
 					this.scrollTop = this.$bar.position().left;
-				} else {
-					
 				}
-			},
-			checkBounds : function () {
-				
 			},
 			_createHorizontalBar : function () {
 				//console.log(this.$el);

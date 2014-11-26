@@ -23,3 +23,6 @@
 # Ignore vender files
 bower_components
 node_modules
+
+# Ignore jasmine tmp
+/.grunt

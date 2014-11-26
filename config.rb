@@ -67,6 +67,9 @@ activate :livereload
 # end
 
 helpers do
+  def slls(str)
+    str.gsub /\s\/>/, '>'
+  end
   def slls_image_tag(url, options={})
     (image_tag(url, options)).gsub /\s\/>/, '>'
   end
@@ -164,6 +167,8 @@ configure :build do
   ignore "js/main-*.js"
   ignore "js/mod"
   ignore "js/mod/*.js"
+  ignore "js/spec"
+  ignore "js/spec/*.js"
 
 end
 

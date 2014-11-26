@@ -7,13 +7,13 @@
 */
 
 define([], function () {
-	var UniqueID = (function () {
-		var id = 0;
-		
-		return function () {
-			return id++;
-		};
-	}());
-	
-	return UniqueID;
+  var UniqueID = (function () {
+    var id = 0;
+    
+    return function () {
+      return id++;
+    };
+  }());
+  
+  return UniqueID;
 });

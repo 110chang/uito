@@ -30,12 +30,13 @@ define([
     _onClick: function(e) {
       var el = e.currentTarget;
       var $target, targetOffset, scrollHeight, clientHeight;
+      var samePath = location.pathname.replace(/^\//,'') === el.pathname.replace(/^\//,'');
+      var sameHost = location.hostname === el.hostname;
 
       if (el.hash.match(/^#\W/)) {
         return;
       }
-      if (location.pathname.replace(/^\//,'') === el.pathname.replace(/^\//,'') 
-      && location.hostname === el.hostname) {
+      if (samePath && sameHost) {
         $target = $(el.hash);
         $target = $target.length && $target || $('[name=' + el.hash.slice(1) +']');
         if ($target.length) {
@@ -54,7 +55,7 @@ define([
     }
   };
 
-  if (_instance == null) {
+  if (_instance === null) {
     _instance = inherit(SmoothScroll).init();
   }
   

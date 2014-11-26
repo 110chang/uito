@@ -41,7 +41,7 @@ define([], function() {
 				} else if (typeof method === 'function') {
 					this.methods.push(method);
 				} else {
-					throw new Error('Arguments must be Array or Function.')
+					throw new Error('Arguments must be Array or Function.');
 				}
 				
 				return this;
