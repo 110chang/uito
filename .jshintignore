@@ -1,3 +1,4 @@
 source/js/all.js
 source/js/lib/*
+source/js/spec/*
 source/js/mod/utils/_ie.js

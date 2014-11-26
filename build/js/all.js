@@ -443,11 +443,8 @@ define('mod/inherit',[], function() {
     var i = 0, o = {}, F = function() {}, child, prop;
     
     for (; i < arguments.length; i++) {
-      //console.log(arguments);
       for (prop in arguments[i]) {
-        if (arguments[i].hasOwnProperty(prop)) {
-          o[prop] = arguments[i][prop];
-        }
+        o[prop] = arguments[i][prop];
       }
     }
     F.prototype = o;
