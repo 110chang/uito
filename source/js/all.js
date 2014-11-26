@@ -574,13 +574,32 @@ define('mod/nav/smoothscroll',[
 });
 /*
 *
+*   Utils._ie
+*
+*/
+
+define('mod/utils/_ie',[], function() {
+  return (function() { 
+    var undef, v = 3, div = document.createElement('div');
+    while (
+      div.innerHTML = '<!--[if gt IE '+(++v)+']><i></i><![endif]-->',
+      div.getElementsByTagName('i')[0]
+    );
+    return v > 4 ? v : undef;
+  }());
+});
+
+/*
+*
 *   Utils.Browser r1
 *
 *   @author Yuji Ito @110chang
 *
 */
 
-define('mod/browser',[], function() {
+define('mod/browser',[
+  'mod/utils/_ie'
+], function(_ie) {
   var _userAgent = navigator.userAgent,
     _is_IE       = /MSIE/.test(_userAgent),
     _is_iPhone   = /iPhone/.test(_userAgent),
@@ -590,16 +609,6 @@ define('mod/browser',[], function() {
     _is_windows  = /Win/.test(navigator.platform),
     _is_mac      = /Mac/.test(navigator.platform),
     _is_WebKit   = /Chrome|Safari/.test(_userAgent),
-// Detect IE in JS using conditional comments (lt IE10)
-// via http://james.padolsey.com/javascript/detect-ie-in-js-using-conditional-comments/
-    _ie = (function() { 
-      var undef, v = 3, div = document.createElement('div');
-      while (
-        div.innerHTML = '<!--[if gt IE '+(++v)+']><i></i><![endif]-->',
-        div.getElementsByTagName('i')[0]
-      );
-      return v > 4 ? v : undef;
-    }()),
     
     Browser = {
       IE          : _is_IE,

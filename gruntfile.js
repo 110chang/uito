@@ -17,15 +17,12 @@ module.exports = function(grunt) {
         }
       }
     },
-
     watch: {
       files: [
-        './source/js/main.js',
-        './source/js/main-*.js'
+        './source/js/**/*.js'
       ],
-      tasks: ['jshint']
+      tasks: ['jasmine']
     },
-
     requirejs: {
       compile: {
         options: {
@@ -38,7 +35,6 @@ module.exports = function(grunt) {
         }
       }
     },
-
     middleman: {
       options: {
         useBundle: true
@@ -59,29 +55,47 @@ module.exports = function(grunt) {
         }
       }
     },
-
     jshint: {
       files: [
-        //'Gruntfile.js',
         './source/js/**/*.js',
-        //'package.json',
         '.jshintrc'
       ],
       options: {
         jshintrc: '.jshintrc'
       }
+    },
+    jasmine: {
+      inherit: {
+        src: './source/js/mod/inherit',
+        options: {
+          specs: './source/js/spec/*Spec.js',
+          helpers: './source/js/spec/*Helper.js',
+          keepRunner: true,
+          template: require('grunt-template-jasmine-requirejs'),
+          templateOptions: {
+            requireConfigFile: './source/js/main.js',
+            requireConfig: {
+              baseUrl: './source/js/'
+            }
+          }
+        }
+      }
     }
   });
 
   //matchdepでpackage.jsonから"grunt-*"で始まる設定を読み込む
-  require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
-  grunt.loadNpmTasks('grunt-contrib-jshint');
-
+  //require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
+  require('load-grunt-tasks')(grunt, {
+    pattern: ['grunt-*', '!grunt-template-jasmine-requirejs']
+  });
+  
   grunt.registerTask('init', ['bower:install']);
   grunt.registerTask('server', ['middleman:server']);
-  grunt.registerTask('build', ['requirejs:compile', 'middleman:build']);
+  grunt.registerTask('watch', ['watch']);
+  grunt.registerTask('build', ['requirejs:compile', 'middleman:build', 'jshint']);
+  // short hands
   grunt.registerTask('i', ['bower:install']);
   grunt.registerTask('s', ['middleman:server']);
-  grunt.registerTask('w', ['jshint']);
-  grunt.registerTask('b', ['requirejs:compile', 'middleman:build']);
+  grunt.registerTask('w', ['watch']);
+  grunt.registerTask('b', ['requirejs:compile', 'middleman:build', 'jshint']);
 }
