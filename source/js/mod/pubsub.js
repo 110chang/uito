@@ -1,23 +1,24 @@
 /*
 *
-*   PubSub r1
+*   PubSub r2
 *
 *   @author Yuji Ito @110chang
 *   via "Learning JavaScript Design Patterns" by Addy Osmani
 *
 */
 
-define([], function() {
+define([
+  'mod/extend'
+], function(extend) {
   var _uid = -1;
 
-  var PubSub = {
-    topics: null,
-    
-    init: function() {
-      this.topics = {};
-      
-      return this;
-    },
+  function PubSub() {
+    if (!(this instanceof PubSub)) {
+      return new PubSub();
+    }
+    this.topics = {};
+  }
+  extend(PubSub.prototype, {
     publish: function(topic, args) {
       if (!this.topics[topic]) {
         return false;
@@ -94,10 +95,13 @@ define([], function() {
           }
         }
       }
-      
       return this;
-    }
-  };
+    },
+    // short hands
+    pub: this.publish,
+    sub: this.subscribe,
+    unsub: this.unsubscribe
+  });
 
   return PubSub;
 });

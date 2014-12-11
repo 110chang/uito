@@ -1,41 +1,41 @@
 /*
 *
-*   PubSubGroup r1
+*   PubSubGroup r2
 *
 *   @author Yuji Ito @110chang
 *
 */
 
 define([
+  'mod/extend',
   'mod/inherit',
-  'mod/compare',
   'mod/pubsub'
-], function(inherit, compare, PubSub) {
-  var PubSubGroup = inherit(PubSub, {
-      COMPLETE: 'onComplete',
-      count: 0,
-      
-      init: function() {
-        PubSub.init.call(this);
-        this.count = 0;
-        
-        return this;
-      },
-      add: function(publisher, topic) {
-        if (!compare(publisher, PubSub)) {
-          throw new Error('Publisher must be inherit PubSub.');
-        }
-        publisher.subscribe(topic, '_onPublish', this);
-        this.count++;
-      },
-      _onPublish: function() {
-        this.count--;
-        
-        if (this.count === 0) {
-          this.publish(PubSubGroup.COMPLETE);
-        }
+], function(extend, inherit, PubSub) {
+  function PubSubGroup() {
+    if (!(this instanceof PubSubGroup)) {
+      return new PubSubGroup();
+    }
+    PubSub.call(this);
+    this.count = 0;
+  }
+  inherit(PubSubGroup, PubSub)
+  extend(PubSubGroup.prototype, {
+    add: function(publisher, topic) {
+      if (!publisher.subscribe) {
+        throw new Error('Publisher must be inherit PubSub.');
       }
-    });
-  
+      publisher.subscribe(topic, '_onPublish', this);
+      this.count++;
+    },
+    _onPublish: function() {
+      this.count--;
+      
+      if (this.count === 0) {
+        this.publish(PubSubGroup.COMPLETE);
+      }
+    }
+  });
+  PubSubGroup.COMPLETE = 'onComplete';
+
   return PubSubGroup;
 });

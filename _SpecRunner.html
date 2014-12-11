@@ -40,7 +40,7 @@
     
       require.config({
   "baseUrl": "./source/js/",
-  "urlArgs": "bust=1417009289787",
+  "urlArgs": "bust=1418286851081",
   "paths": {
     "mod": "mod"
   }
@@ -58,7 +58,7 @@
       
     ],
     function(){
-      require(['source/js/spec/inheritSpec.js','.grunt/grunt-contrib-jasmine/reporter.js'], function(){
+      require(['source/js/spec/browserSpec.js','source/js/spec/extendSpec.js','source/js/spec/inheritSpec.js','source/js/spec/pubsubSpec.js','source/js/spec/pubsubgroupSpec.js','.grunt/grunt-contrib-jasmine/reporter.js'], function(){
         startTests();
       });
     }

@@ -42,9 +42,9 @@ module.exports = function(grunt) {
       server: {
         options: {
           command: "server",
-          useBundle: false,
+          useBundle: true,
           environment: "development",
-          host: "192.168.1.8",
+          host: "192.168.1.11",
           port: 4567,
           clean: true,
         }
@@ -65,18 +65,16 @@ module.exports = function(grunt) {
       }
     },
     jasmine: {
-      inherit: {
-        src: './source/js/mod/inherit',
-        options: {
-          specs: './source/js/spec/*Spec.js',
-          helpers: './source/js/spec/*Helper.js',
-          keepRunner: true,
-          template: require('grunt-template-jasmine-requirejs'),
-          templateOptions: {
-            requireConfigFile: './source/js/main.js',
-            requireConfig: {
-              baseUrl: './source/js/'
-            }
+      src: './source/js/mod/inherit',
+      options: {
+        specs: './source/js/spec/*Spec.js',
+        helpers: './source/js/spec/*Helper.js',
+        keepRunner: true,
+        template: require('grunt-template-jasmine-requirejs'),
+        templateOptions: {
+          requireConfigFile: './source/js/main.js',
+          requireConfig: {
+            baseUrl: './source/js/'
           }
         }
       }
