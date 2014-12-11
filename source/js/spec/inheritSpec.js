@@ -62,7 +62,7 @@ define([
       expect(SuperPerson.constructor).toEqual(Function);
     });
 
-    it('supplement: create instance when initialize without `new`', function() {
+    it('(supplement) create instance when initialize without `new`', function() {
       var jiro = Person('Jiro');
       expect(jiro.name).toEqual('Jiro');
       expect(jiro.attack()).toEqual(200);
