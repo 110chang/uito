@@ -18,7 +18,7 @@ define([
     PubSub.call(this);
     this.count = 0;
   }
-  inherit(PubSubGroup, PubSub)
+  inherit(PubSubGroup, PubSub);
   extend(PubSubGroup.prototype, {
     add: function(publisher, topic) {
       if (!publisher.subscribe) {

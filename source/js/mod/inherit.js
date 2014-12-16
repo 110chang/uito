@@ -16,7 +16,7 @@ define([], function() {
     d.prototype = new F();
     d.prototype.constructor = d;
     return d;
-  };
+  }
   
   return inherit;
 });

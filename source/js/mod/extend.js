@@ -7,25 +7,23 @@
 */
 
 define([], function() {
-  function extend(obj) {
-    var i = 0;
-    var o, p;
-    var prop;
-    var len = arguments.length;
+  function extend() {
+    var i, l, o, p, prop;
 
-    if (len < 2 || obj == null) {
-      return obj;
-    }
     o = Array.prototype.shift.call(arguments);
-    len = arguments.length;
-    for (; i < len; i++) {
+    l = arguments.length;
+
+    if (l < 1 || o == null) {
+      return o;
+    }
+    for (i = 0; i < l; i++) {
       p = arguments[i];
       for (prop in p) {
         o[prop] = p[prop];
       }
     }
     return o;
-  };
+  }
   
   return extend;
 });

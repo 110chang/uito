@@ -72,10 +72,25 @@ module.exports = function(grunt) {
         keepRunner: true,
         template: require('grunt-template-jasmine-requirejs'),
         templateOptions: {
-          requireConfigFile: './source/js/main.js',
+          //requireConfigFile: './source/js/main.js',
           requireConfig: {
-            baseUrl: './source/js/'
+            baseUrl: './source/js/',
+            urlArgs: 'bust=' + (new Date()).getTime(),
+            paths: {
+              'jquery' : 'lib/jquery',
+              'jquery.easing' : 'lib/jquery.easing'
+            },
+            shim: {
+              'jquery.easing': ['jquery']
+            }
           }
+        },
+        vendor: [
+          './node_modules/jasmine-jquery/vendor/jquery/jquery.js',
+          './node_modules/jasmine-jquery/lib/jasmine-jquery.js'
+        ],
+        phantomjs : {
+          'ignore-ssl-errors' : true
         }
       }
     }

@@ -12,14 +12,10 @@ requirejs.config({
   }
 });
 
-require([
-  'mod/nav/smoothscroll',
-  'mod/screen',
-  'mod/browser'
-], function(smoothScroll, Screen, Browser) {
+require([], function() {
   $(function() {
     console.log('DOM ready.');
-    
+    //
   });
 });
 
