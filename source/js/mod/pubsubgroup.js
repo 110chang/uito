@@ -20,6 +20,7 @@ define([
   }
   inherit(PubSubGroup, PubSub);
   extend(PubSubGroup.prototype, {
+    count: 0,
     add: function(publisher, topic) {
       if (!publisher.subscribe) {
         throw new Error('Publisher must be inherit PubSub.');

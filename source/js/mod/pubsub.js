@@ -19,6 +19,7 @@ define([
     this.topics = {};
   }
   extend(PubSub.prototype, {
+    topics: {},
     publish: function(topic, args) {
       if (!this.topics[topic]) {
         return false;

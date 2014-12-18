@@ -7,8 +7,9 @@
 */
 
 define([
-  'mod/extend'
-], function(extend) {
+  'mod/extend',
+  'mod/inherit'
+], function(extend, inherit) {
   describe("Test case: Extend", function() {
     var Person, SuperPerson, Hentai, Newtype;
 
@@ -17,6 +18,7 @@ define([
         this.name = name;
       };
       extend(Person.prototype, {
+        name: null,
         attack: function() {
           //console.log('attack: 200 damage');
           return 200;
@@ -32,6 +34,7 @@ define([
       SuperPerson = function(name) {
         Person.call(this, name);
       };
+      inherit(SuperPerson, Person)
       extend(SuperPerson.prototype, Person.prototype, {
         attack: function() {
           //console.log('attack 300 damage');

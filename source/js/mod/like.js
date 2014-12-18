@@ -14,8 +14,8 @@ define([], function() {
     if (original == null) {
       throw new Error('Invalid arguments.');
     }
-    for (var prop in target) {
-      if (original[prop] === undefined) {
+    for (var prop in original) {
+      if (target[prop] === undefined) {
         return false;
       }
     }

@@ -21,6 +21,7 @@ define([
         this.name = name;
       };
       extend(Person.prototype, {
+        name: null,
         attack: function() {
           //console.log('attack: 200 damage');
           return 200;

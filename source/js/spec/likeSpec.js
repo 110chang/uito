@@ -9,8 +9,9 @@
 define([
   'mod/extend',
   'mod/inherit',
+  'mod/dump',
   'mod/like'
-], function(extend, inherit, like) {
+], function(extend, inherit, dump, like) {
   describe("Test case: Like", function() {
     var Person, SuperPerson, Hentai, Newtype;
 
@@ -19,6 +20,7 @@ define([
         this.name = name;
       };
       extend(Person.prototype, {
+        name: null,
         attack: function() {
           //console.log('attack: 200 damage');
           return 200;
@@ -36,6 +38,9 @@ define([
         attack: function() {
           //console.log('attack 300 damage');
           return Person.prototype.attack.call(this) + 300;
+        },
+        magic: function() {
+          return 'magic';
         }
       });
 
@@ -55,8 +60,10 @@ define([
       var c = new Hentai('Hoge');
       expect(like(b, a)).toBeTruthy();
       expect(like(SuperPerson.prototype, Person.prototype)).toBeTruthy();
+      expect(like(b, SuperPerson.prototype)).toBeTruthy();
       expect(like(c, a)).toBeFalsy();
       expect(like(Hentai.prototype, Person.prototype)).toBeFalsy();
+      expect(like(c, Hentai.prototype)).toBeTruthy();
     });
 
   }); 

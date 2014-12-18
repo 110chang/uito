@@ -40,7 +40,6 @@ define([
 
     afterEach(function() {
       $body.remove('#fx-wrapper');
-
       //console.log($body.children().size())
     });
 
