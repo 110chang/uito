@@ -59,6 +59,7 @@ define([
       window.scrollTo(500, 500);
       expect(Screen().scrollTop()).toEqual(500);
       expect(Screen().scrollLeft()).toEqual(500);
+      window.scrollTo(0, 0);
     });
 
   }); 

@@ -71,6 +71,14 @@ define([
       expect(n.isSquare()).toBeFalsy();
     });
 
+    it('knows myself same as an another matrix', function() {
+      n = new Matrix([[1, 2, 3], [4, 5, 6]]);
+      expect(m.isSameTypeAs(n)).toBeFalsy();
+      
+      n = new Matrix([[1, 2, 3], [4, 5, 6], [7, 8, 9]]);
+      expect(n.isSameTypeAs(n)).toBeTruthy();
+    });
+
     it('can sum matrix', function() {
       m = new Matrix([[1, 1, 1], [1, 1, 1], [1, 1, 1]]);
       n = new Matrix([[1, 2, 3], [4, 5, 6], [7, 8, 9]]);
@@ -106,6 +114,14 @@ define([
     it('to string representation', function() {
       m = new Matrix([[1, 2, 3], [4, 5, 6], [7, 8, 9]]);
       expect(m.toString()).toEqual('[ 1, 2, 3 ]\n[ 4, 5, 6 ]\n[ 7, 8, 9 ]\n');
+    });
+
+    it('can create zero matrix', function() {
+      var zero3x3 = Matrix.zeroMatrix(3, 3);
+      expect(zero3x3).toEqual(Matrix([[0, 0, 0],[0, 0, 0],[0, 0, 0]]));
+      
+      var zero2x2 = Matrix.zeroMatrix(2, 2);
+      expect(zero2x2).toEqual(Matrix([[0, 0],[0, 0]]));
     });
 
   });
