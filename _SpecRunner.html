@@ -43,8 +43,9 @@
 
     
       require.config({
+  "findNestedDependencies": false,
   "baseUrl": "./source/js/",
-  "urlArgs": "bust=1418914785399",
+  "urlArgs": "bust=1419602170994",
   "paths": {
     "jquery": "lib/jquery",
     "jquery.easing": "lib/jquery.easing"
@@ -68,7 +69,7 @@
       
     ],
     function(){
-      require(['source/js/spec/browserSpec.js','source/js/spec/extendSpec.js','source/js/spec/geomMatrixSpec.js','source/js/spec/geomPointSpec.js','source/js/spec/geomVectorSpec.js','source/js/spec/inheritSpec.js','source/js/spec/likeSpec.js','source/js/spec/navAnchorSpec.js','source/js/spec/pubsubSpec.js','source/js/spec/pubsubgroupSpec.js','source/js/spec/screenSpec.js','.grunt/grunt-contrib-jasmine/reporter.js'], function(){
+      require(['source/js/spec/browserSpec.js','source/js/spec/extendSpec.js','source/js/spec/geomCircleSpec.js','source/js/spec/geomMatrixSpec.js','source/js/spec/geomPointSpec.js','source/js/spec/geomRectangleSpec.js','source/js/spec/geomSegmentSpec.js','source/js/spec/geomTriangleSpec.js','source/js/spec/geomVectorSpec.js','source/js/spec/inheritSpec.js','source/js/spec/likeSpec.js','source/js/spec/navAnchorSpec.js','source/js/spec/preloadSpec.js','source/js/spec/pubsubSpec.js','source/js/spec/pubsubgroupSpec.js','source/js/spec/screenSpec.js','source/js/spec/timerSpec.js','.grunt/grunt-contrib-jasmine/reporter.js'], function(){
         startTests();
       });
     }

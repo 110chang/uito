@@ -1,6 +1,6 @@
 /*
 *
-*   Utils._ie
+*   Utils.legacyIE
 *
 */
 

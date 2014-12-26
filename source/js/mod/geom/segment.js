@@ -12,10 +12,14 @@ define([
   'mod/geom/vector',
   'mod/geom/point'
 ], function(extend, like, Vector, Point) {
+
   var atan2 = Math.atan2;
   var PI    = Math.PI;
 
   function Segment() {
+    if (!(this instanceof Segment)) {
+      throw new Error('Can not be initialized without `new`.');
+    }
     var a, b, i;
 
     if (arguments.length < 2) {
@@ -49,6 +53,7 @@ define([
     end       : null,
     direction : 0,
     length    : 0,
+
     contain: function(point) {
       if (!like(point, Point.prototype)) {
         throw new Error('Arguments must be Number.');
@@ -69,7 +74,6 @@ define([
       }
       // ### Avoid a circular dependencies ###
       var Triangle = require('mod/geom/triangle');
-      // ###
       var t1 = new Triangle(this.start, this.end, segment.start);
       var t2 = new Triangle(this.start, this.end, segment.end);
       var t3 = new Triangle(segment.start, segment.end, this.start);
@@ -77,13 +81,13 @@ define([
       var I  = false;
       
       if (t1.getArea() * t2.getArea() < 0 && t3.getArea() * t4.getArea() < 0) {
-        I = this.getIntersection(segment);
+        I = this._getIntersection(segment);
       }
       return I;
     },
-    getIntersection: function(segment) {
+    _getIntersection: function(segment) {
       if (!like(segment, Segment.prototype)) {
-        throw 'Arguments must be Segment.';
+        throw new Error('Arguments must be Segment.');
       }
       var s0 = this;
       var s1 = segment;

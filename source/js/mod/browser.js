@@ -8,7 +8,7 @@
 
 define([
   'mod/extend',
-  'mod/utils/_ie'
+  'mod/utils/legacyie'
 ], function(extend, _ie) {
   var _userAgent = navigator.userAgent;
   function _is_IE(ua) {

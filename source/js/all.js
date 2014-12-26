@@ -431,6 +431,63 @@ var requirejs, require, define;
 define("lib/almond", function(){});
 
 /*
+*
+*   Extend r1
+*
+*   @author Yuji Ito @110chang
+*
+*/
+
+define('mod/extend',[], function() {
+  function extend() {
+    var i, l, o, p, prop;
+
+    o = Array.prototype.shift.call(arguments);
+    l = arguments.length;
+
+    if (l < 1 || o == null) {
+      return o;
+    }
+    for (i = 0; i < l; i++) {
+      p = arguments[i];
+      for (prop in p) {
+        o[prop] = p[prop];
+      }
+    }
+    return o;
+  }
+  
+  return extend;
+});
+
+/*
+*
+*   Like r1
+*
+*   @author Yuji Ito @110chang
+*
+*/
+
+define('mod/like',[], function() {
+  function like(target, original) {
+    if (target == null) {
+      throw new Error('Invalid arguments.');
+    }
+    if (original == null) {
+      throw new Error('Invalid arguments.');
+    }
+    for (var prop in original) {
+      if (target[prop] === undefined) {
+        return false;
+      }
+    }
+    return true;
+  }
+  
+  return like;
+});
+
+/*
  *
  *   Main 
  *
@@ -444,10 +501,48 @@ requirejs.config({
   }
 });
 
-require([], function() {
+require([
+  'mod/extend',
+  'mod/like'
+], function(extend, like) {
   $(function() {
     console.log('DOM ready.');
-    //
+    function Point(x, y) {
+      this.x = x;
+      this.y = y;
+    }
+    function Segment(start, end) {
+      this.start = start;
+      this.end = end;
+    }
+    extend(Segment.prototype, {
+      getDistance: function() {
+        var x0 = this.start.x;
+        var y0 = this.start.y;
+        var x1 = this.end.x;
+        var y1 = this.end.y;
+        return Math.sqrt((x1 - x0) * (x1 - x0) + (y1 - y0) * (y1 - y0));
+      },
+      test: function() {
+        var t = new Triangle(P, Q, R);
+        console.log(t);
+      }
+    });
+    function Triangle(start, middle, end) {
+      if (!like(start, Point.prototype)) {
+        throw new Error('Arguments must be Point.');
+      }
+      this.start = start;
+      this.middle = middle;
+      this.end = end;
+    }
+    var P = new Point(0, 0);
+    var Q = new Point(10, 10);
+    var R = new Point(10, 0);
+    var s = new Segment(P, Q);
+    console.log(s.getDistance());
+
+    s.test();
   });
 });
 

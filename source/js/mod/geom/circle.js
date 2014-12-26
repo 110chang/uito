@@ -14,6 +14,9 @@ define([
   var pow = Math.pow;
 
   function Circle(x, y, radius) {
+    if (!(this instanceof Circle)) {
+      return new Circle(x, y, radius);
+    }
     x = x == null ? 0 : x;
     y = y == null ? 0 : y;
     radius = radius == null ? 1 : radius;
@@ -23,16 +26,20 @@ define([
     }
     this.x      = x;
     this.y      = y;
-    this.radius = radius;
     this.center = new Point(x, y);
+    this.radius = radius;
   }
   extend(Circle.prototype, {
     x      : 0,
     y      : 0,
     radius : 100,
     center : null,
+    
     getCenter: function(){
       return this.center;
+    },
+    getRadius: function(){
+      return this.radius;
     },
     translate: function(x, y) {
       if (typeof x !== 'number' || typeof y !== 'number') {
@@ -42,7 +49,7 @@ define([
       this.y += y;
       this.center.translate(x, y);
     },
-    scaling: function(s) {
+    scale: function(s) {
       if (typeof s !== 'number') {
         throw new Error('Arguments must be Number.');
       }

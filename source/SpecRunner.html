@@ -1,0 +1,79 @@
+<!doctype html>
+<html>
+<head>
+<title>Unit Test With Jasmine And RequireJS</title>
+
+<!-- Include the Jasmine assets for running in an HTML page. -->
+<link rel="stylesheet" type="text/css" href="js/lib/jasmine/jasmine.css"></link>
+<script type="text/javascript" src="js/lib/jasmine/jasmine.js"></script>
+<script type="text/javascript" src="js/lib/jasmine/jasmine-html.js"></script>
+<script type="text/javascript" src="js/lib/jasmine/boot.js"></script>
+
+<!--
+  Since we are in the "test" directory, not in the standard
+  "js" directory, we need to define the path prefix' for the
+  RequireJS modules so that the modules can be found from the
+  tests running in the Spec directory.
+-->
+<script type="text/javascript">
+
+  var require = {
+    baseUrl: 'js',
+    paths: {
+      'jquery': 'lib/jquery',
+      'jquery.easing': 'lib/jquery.easing',
+      'spec': 'spec',
+      'mod': 'mod'
+    },
+    shim  : {
+      'jquery.easing'   : ['jquery']
+    },
+    urlArgs : 'bust=' + (new Date()).getTime()
+  };
+
+</script>
+<script type="text/javascript" src="js/lib/require.js"></script>
+
+<!--
+  Use RequireJS to load and execute the actual Jasmine test
+  specifications (ie. specs).
+
+  NOTE: We have to use the domReady! plugin since the Jasmine
+  reporter needs to have access to the BODY tag of the document
+  when outputting the results of the test.
+-->
+<script type="text/javascript">
+  
+  require(
+    [
+      'jquery',
+      'jquery.easing',
+      'spec/extendSpec',
+      'spec/inheritSpec',
+      'spec/likeSpec',
+      'spec/geomVectorSpec',
+      'spec/geomMatrixSpec',
+      'spec/geomPointSpec',
+      'spec/geomSegmentSpec',
+      //'spec/geom/raySpec',
+      //'spec/geom/lineSpec',
+      'spec/geomTriangleSpec',
+      //'spec/geomRectangleSpec',
+      'spec/geomCircleSpec',
+      'spec/pubsubSpec',
+      'spec/pubsubgroupSpec',
+      'spec/browserSpec',
+      'spec/screenSpec'
+    ],
+    function($){
+      window.executeJasmineTests();
+    }
+  );
+
+</script>
+ 
+</head>
+<body>
+  <!-- Left intentionally blank. -->
+</body>
+</html>
