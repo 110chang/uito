@@ -49,17 +49,17 @@ define([
       }
     },
     _doAnimation: function($el) {
-      var targetOffset, scrollHeight, clientHeight;
-
-      targetOffset = $el.offset().top - this.conf.fix;
-      targetOffset = targetOffset < 0 ? 0 : targetOffset;
-      scrollHeight = Screen().scrollHeight();
-      clientHeight = Screen().clientHeight();
+      var targetOffset = $el.offset().top - this.conf.fix;
+      var scrollHeight = Screen().scrollHeight();
+      var clientHeight = Screen().clientHeight();
       //console.log((targetOffset + clientHeight) +','+ scrollHeight);
+      if (targetOffset < 0) {
+        targetOffset = 0;
+      }
       if ((targetOffset + clientHeight) > scrollHeight) {
         targetOffset = scrollHeight - clientHeight;
       }
-      $('html,body').animate({
+      $('body, html').animate({
         scrollTop: targetOffset
       }, this.conf.duration, this.conf.easing).promise().done(
         $.proxy(this._onAnimationComplete, this, {$el: $el})
@@ -73,6 +73,7 @@ define([
       return $target.length > 0 && $target || $('[name=' + hash.slice(1) +']');
     },
     _pathIsSame: function(path) {
+      path = /^\/.+/.test(path) ? path : '/' + path;// supple start `/` on fxxk IE9
       return location.pathname.slice(1) === path.slice(1);
     },
     _hostIsSame: function(host) {
