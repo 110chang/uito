@@ -27,6 +27,8 @@ GEM
     eventmachine (1.0.3)
     execjs (1.4.1)
       multi_json (~> 1.0)
+    faker (1.4.3)
+      i18n (~> 0.5)
     ffi (1.9.6)
     haml (4.0.5)
       tilt
@@ -104,6 +106,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  faker
   middleman (~> 3.2.2)
   middleman-livereload (~> 3.1.0)
   slim (~> 2.0.2)
