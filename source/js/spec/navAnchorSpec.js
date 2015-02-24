@@ -46,10 +46,12 @@ define([
     it('is singleton', function() {
       var a = Anchor();
       var b = new Anchor();
+      var c = Anchor();
       expect(a).toBe(b);
       a.initialize({duration: 500});
       b.initialize({duration: 1000});
       expect(a.conf.duration).toBe(b.conf.duration);
+      expect(a.conf.duration).toBe(c.conf.duration);
     });
 
     it('can add animation to anchor links', function(done) {

@@ -13,6 +13,7 @@ define([
     if (!(this instanceof Screen)) {
       return new Screen();
     }
+    return this;
   }
   extend(Screen.prototype, {
     width: function() {

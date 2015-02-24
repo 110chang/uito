@@ -1,17 +1,15 @@
 /*
 *
-*   Nav.Anchor r1
+*   Nav.Anchor r1.1
 *
 *   @author Yuji Ito @110chang
 *
 */
 
 define([
-  'jquery',
-  'jquery.easing',
   'mod/extend',
   'mod/screen'
-], function($, easing, extend, Screen) {
+], function(extend, Screen) {
   var _instance = null;
   var defaults = {
     duration: 1000,
@@ -19,33 +17,32 @@ define([
     fix: 0
   };
   function Anchor() {
-    this.conf = {};
     if (_instance != null) {
       return _instance;
     } else {
       if (!(this instanceof Anchor)) {
-        return new Anchor();
+        _instance = new Anchor();
       } else {
         _instance = this;
       }
     }
+    return _instance;
   }
   extend(Anchor.prototype, {
     initialize: function(options) {
-      $.extend(this.conf, defaults, options || {});
+      this.conf = $.extend({}, defaults, options || {});
       this.$a = $('a[href*=#]');
       this.$a.off('click.navAnchor')
         .on('click.navAnchor', $.proxy(this._onClick, this));
     },
     _onClick: function(e) {
+      if (e.currentTarget.hash.match(/^#\W/)) {
+        return;//exclude non anchor, routing /#!/ /#/ and so.
+      }
       var el = e.currentTarget;
       var $target = this._getTarget(el.hash);
       var pathIsSame = this._pathIsSame(el.pathname);
       var hostIsSame = this._hostIsSame(el.hostname);
-
-      if (el.hash.match(/^#\W/)) {
-        return;//exclude routing /#!/ /#/ and so.
-      }
       if ($target && pathIsSame && hostIsSame) {
         this._doAnimation($target);
         return false;
@@ -69,7 +66,7 @@ define([
       );
     },
     _onAnimationComplete: function(data) {
-      $(window).trigger('anchorAnimationFinish', {$el: data.$el});
+      $(window).trigger(Anchor.ANIMATION_FINISH, {$el: data.$el});
     },
     _getTarget: function(hash) {
       var $target = $(hash);
@@ -82,6 +79,7 @@ define([
       return location.hostname === host;
     }
   });
+  Anchor.ANIMATION_FINISH = 'anchorAnimationFinish';
 
   return Anchor;
 });

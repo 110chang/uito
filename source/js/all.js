@@ -488,6 +488,149 @@ define('mod/like',[], function() {
 });
 
 /*
+*
+*   Screen r3
+*
+*   @author Yuji Ito @110chang
+*
+*/
+
+define('mod/screen',[
+  'mod/extend'
+], function(extend) {
+  function Screen() {
+    if (!(this instanceof Screen)) {
+      return new Screen();
+    }
+    return this;
+  }
+  extend(Screen.prototype, {
+    width: function() {
+      return this.clientWidth();
+    },
+    height: function() {
+      return this.clientHeight();
+    },
+    scrollWidth: function() {
+      return Math.max.apply(null, [
+        document.body.clientWidth,
+        document.body.scrollWidth,
+        document.documentElement.scrollWidth,
+        document.documentElement.clientWidth
+      ]);
+    },
+    scrollHeight: function() {
+      // Ref. http://css-eblog.com/javascript/javascript-contents-height.html
+      return Math.max.apply(null, [
+        document.body.clientHeight,
+        document.body.scrollHeight,
+        document.documentElement.scrollHeight,
+        document.documentElement.clientHeight
+      ]);
+    },
+    scrollTop: function() {
+      return document.documentElement.scrollTop || document.body.scrollTop;
+    },
+    scrollLeft: function() {
+      return document.documentElement.scrollLeft || document.body.scrollLeft;
+    },
+    clientWidth: function() {
+      return document.clientWidth || document.documentElement.clientWidth;
+    },
+    clientHeight: function() {
+      return document.clientHeight || document.documentElement.clientHeight;
+    }
+  });
+  
+  return Screen;
+});
+
+/*
+*
+*   Nav.Anchor r1.1
+*
+*   @author Yuji Ito @110chang
+*
+*/
+
+define('mod/nav/anchor',[
+  'mod/extend',
+  'mod/screen'
+], function(extend, Screen) {
+  var _instance = null;
+  var defaults = {
+    duration: 1000,
+    easing: 'easeInOutExpo',
+    fix: 0
+  };
+  function Anchor() {
+    if (_instance != null) {
+      return _instance;
+    } else {
+      if (!(this instanceof Anchor)) {
+        _instance = new Anchor();
+      } else {
+        _instance = this;
+      }
+    }
+    return _instance;
+  }
+  extend(Anchor.prototype, {
+    initialize: function(options) {
+      this.conf = $.extend({}, defaults, options || {});
+      this.$a = $('a[href*=#]');
+      this.$a.off('click.navAnchor')
+        .on('click.navAnchor', $.proxy(this._onClick, this));
+    },
+    _onClick: function(e) {
+      if (e.currentTarget.hash.match(/^#\W/)) {
+        return;//exclude non anchor, routing /#!/ /#/ and so.
+      }
+      var el = e.currentTarget;
+      var $target = this._getTarget(el.hash);
+      var pathIsSame = this._pathIsSame(el.pathname);
+      var hostIsSame = this._hostIsSame(el.hostname);
+      if ($target && pathIsSame && hostIsSame) {
+        this._doAnimation($target);
+        return false;
+      }
+    },
+    _doAnimation: function($el) {
+      var targetOffset, scrollHeight, clientHeight;
+
+      targetOffset = $el.offset().top - this.conf.fix;
+      targetOffset = targetOffset < 0 ? 0 : targetOffset;
+      scrollHeight = Screen().scrollHeight();
+      clientHeight = Screen().clientHeight();
+      //console.log((targetOffset + clientHeight) +','+ scrollHeight);
+      if ((targetOffset + clientHeight) > scrollHeight) {
+        targetOffset = scrollHeight - clientHeight;
+      }
+      $('html,body').animate({
+        scrollTop: targetOffset
+      }, this.conf.duration, this.conf.easing).promise().done(
+        $.proxy(this._onAnimationComplete, this, {$el: $el})
+      );
+    },
+    _onAnimationComplete: function(data) {
+      $(window).trigger(Anchor.ANIMATION_FINISH, {$el: data.$el});
+    },
+    _getTarget: function(hash) {
+      var $target = $(hash);
+      return $target.length > 0 && $target || $('[name=' + hash.slice(1) +']');
+    },
+    _pathIsSame: function(path) {
+      return location.pathname.slice(1) === path.slice(1);
+    },
+    _hostIsSame: function(host) {
+      return location.hostname === host;
+    }
+  });
+  Anchor.ANIMATION_FINISH = 'anchorAnimationFinish';
+
+  return Anchor;
+});
+/*
  *
  *   Main 
  *
@@ -497,52 +640,34 @@ requirejs.config({
   baseUrl: '/js',
   urlArgs: 'bust=' + (new Date()).getTime(),
   paths: {
-    'mod' : 'mod'
+    'mod' : 'mod',
+    'jquery' : 'lib/jquery',
+    'jquery.easing' : 'lib/jquery.easing'
+  },
+  shim: {
+    'jquery.easing': ['jquery']
   }
 });
 
 require([
   'mod/extend',
-  'mod/like'
-], function(extend, like) {
+  'mod/like',
+  'mod/nav/anchor'
+], function(extend, like, Anchor) {
   $(function() {
     console.log('DOM ready.');
-    function Point(x, y) {
-      this.x = x;
-      this.y = y;
-    }
-    function Segment(start, end) {
-      this.start = start;
-      this.end = end;
-    }
-    extend(Segment.prototype, {
-      getDistance: function() {
-        var x0 = this.start.x;
-        var y0 = this.start.y;
-        var x1 = this.end.x;
-        var y1 = this.end.y;
-        return Math.sqrt((x1 - x0) * (x1 - x0) + (y1 - y0) * (y1 - y0));
-      },
-      test: function() {
-        var t = new Triangle(P, Q, R);
-        console.log(t);
-      }
-    });
-    function Triangle(start, middle, end) {
-      if (!like(start, Point.prototype)) {
-        throw new Error('Arguments must be Point.');
-      }
-      this.start = start;
-      this.middle = middle;
-      this.end = end;
-    }
-    var P = new Point(0, 0);
-    var Q = new Point(10, 10);
-    var R = new Point(10, 0);
-    var s = new Segment(P, Q);
-    console.log(s.getDistance());
+    var $navAnchor = $('#nav-anchor');
 
-    s.test();
+    if ($navAnchor.size() > 0) {
+      Anchor().initialize({
+        fix: 100
+      });
+
+      $(window).on(Anchor.ANIMATION_FINISH, function(e) {
+        console.log('Anchor animation finish.');
+      });
+    }
+    
   });
 });
 

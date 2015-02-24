@@ -7,13 +7,12 @@
 */
 
 define([
-  'jquery',
   'mod/extend',
   'mod/inherit',
   'mod/pubsub',
   'mod/browser',
   'mod/timer'
-], function($, extend, inherit, PubSub, Browser, Timer) {
+], function(extend, inherit, PubSub, Browser, Timer) {
   var total, loaded, psuedo, print;
   var _instance = null;
 

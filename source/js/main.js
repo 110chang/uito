@@ -8,52 +8,34 @@ requirejs.config({
   baseUrl: '/js',
   urlArgs: 'bust=' + (new Date()).getTime(),
   paths: {
-    'mod' : 'mod'
+    'mod' : 'mod',
+    'jquery' : 'lib/jquery',
+    'jquery.easing' : 'lib/jquery.easing'
+  },
+  shim: {
+    'jquery.easing': ['jquery']
   }
 });
 
 require([
   'mod/extend',
-  'mod/like'
-], function(extend, like) {
+  'mod/like',
+  'mod/nav/anchor'
+], function(extend, like, Anchor) {
   $(function() {
     console.log('DOM ready.');
-    function Point(x, y) {
-      this.x = x;
-      this.y = y;
-    }
-    function Segment(start, end) {
-      this.start = start;
-      this.end = end;
-    }
-    extend(Segment.prototype, {
-      getDistance: function() {
-        var x0 = this.start.x;
-        var y0 = this.start.y;
-        var x1 = this.end.x;
-        var y1 = this.end.y;
-        return Math.sqrt((x1 - x0) * (x1 - x0) + (y1 - y0) * (y1 - y0));
-      },
-      test: function() {
-        var t = new Triangle(P, Q, R);
-        console.log(t);
-      }
-    });
-    function Triangle(start, middle, end) {
-      if (!like(start, Point.prototype)) {
-        throw new Error('Arguments must be Point.');
-      }
-      this.start = start;
-      this.middle = middle;
-      this.end = end;
-    }
-    var P = new Point(0, 0);
-    var Q = new Point(10, 10);
-    var R = new Point(10, 0);
-    var s = new Segment(P, Q);
-    console.log(s.getDistance());
+    var $navAnchor = $('#nav-anchor');
 
-    s.test();
+    if ($navAnchor.size() > 0) {
+      Anchor().initialize({
+        fix: 100
+      });
+
+      $(window).on(Anchor.ANIMATION_FINISH, function(e) {
+        console.log('Anchor animation finish.');
+      });
+    }
+    
   });
 });
 
