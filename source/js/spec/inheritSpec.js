@@ -7,86 +7,71 @@
 */
 
 define([
-  'mod/inherit'
-], function(inherit) {
+  'mod/inherit',
+  'mod/extend'
+], function(inherit, extend) {
   describe("Test case: Inherit", function() {
     var Person, SuperPerson, Hentai, Newtype;
 
     beforeEach(function () {
-      Person = {
-        health: 100,
-        strength: 120,
-        
-        init: function (health, strength) {
-          //console.log('hoge');
-          this.health = health || 100;
-          this.strength = strength || 120;
-
-          return this;
-        },
-        attack: function () {
-          return 'attack! ' + this.strength;
-        },
-        defend: function () {
-          return 'defend ' + this.health;
+      Person = function(name) {
+        if (!(this instanceof Person)) {
+          return new Person(name);
         }
+        this.name = name;
       };
-      
-      SuperPerson = inherit(Person, {
-        init: function (health, strength) {
-          health = health || 140;
-          strength = strength || 200;
-          Person.init.call(this, health, strength);
-
-          return this;
+      extend(Person.prototype, {
+        name: null,
+        attack: function() {
+          //console.log('attack: 200 damage');
+          return 200;
         },
-        attack: function () {
-          return 'super attack! ' + this.strength;
-        },
-      });
-      
-      Hentai = inherit(Person, {
-        init: function (health) {
-          health = health || 1000;
-          Person.init.call(this, health);
-
-          return this;
-        },
-        attack: function () {
-          return 'hentai attack! ' + this.strength;
-        },
+        defence: function() {
+          //console.log('defence: 150 damage');
+          return 150;
+        }
       });
     });
 
-    it('can create new object', function () {
-      var person = inherit(Person).init();
-      expect(person.health).toEqual(100);
-      expect(person.strength).toEqual(120);
-      expect(person.attack()).toEqual('attack! 120');
-      expect(person.defend()).toEqual('defend 100');
-    });
-    
-    it('can inherit object and change value of member', function () {
-      var superPerson = inherit(SuperPerson).init();
-      expect(superPerson.health).toEqual(140);
-      expect(superPerson.strength).toEqual(200);
-      expect(superPerson.attack()).toEqual('super attack! 200');
-      expect(superPerson.defend()).toEqual('defend 140');
-      
-      var hentai = inherit(Hentai).init();
-      expect(hentai.health).toEqual(1000);
-      expect(hentai.strength).toEqual(120);
-      expect(hentai.attack()).toEqual('hentai attack! 120');
-      expect(hentai.defend()).toEqual('defend 1000');
-    });
-    
-    it('can extends properties', function () {
-      //console.log(Person.extend);
-      Newtype = inherit(Person, {
-        psycomu: true
+    it('can inherit function object to the other.', function() {
+      SuperPerson = function(name) {
+        Person.call(this, name);
+      };
+      inherit(SuperPerson, Person);
+      extend(SuperPerson.prototype, {
+        //constructor: SuperPerson,
+        attack: function() {
+          //console.log('attack 300 damage');
+          return Person.prototype.attack.call(this) + 300;
+        }
       });
-      
-      expect(Newtype.psycomu).toBeTruthy();
+      var a = new Person('John');
+      expect(a.name).toEqual('John');
+      expect(a.attack()).toEqual(200);
+      expect(a.defence()).toEqual(150);
+      expect(a.constructor).toEqual(Person);
+      expect(a instanceof Person).toBeTruthy();
+      expect(Person.constructor).toEqual(Function);
+
+      var b = new SuperPerson('Taro');
+      expect(b.name).toEqual('Taro');
+      expect(b.attack()).toEqual(500);
+      expect(a.defence()).toEqual(150);
+      expect(b.constructor).toEqual(SuperPerson);
+      expect(b instanceof Person).toBeTruthy();
+      expect(b instanceof SuperPerson).toBeTruthy();
+      expect(SuperPerson.constructor).toEqual(Function);
     });
+
+    it('(supplement) create instance when initialize without `new`', function() {
+      var jiro = Person('Jiro');
+      expect(jiro.name).toEqual('Jiro');
+      expect(jiro.attack()).toEqual(200);
+      expect(jiro.defence()).toEqual(150);
+      expect(jiro.constructor).toEqual(Person);
+      expect(jiro instanceof Person).toBeTruthy();
+      expect(window.attack).toBeUndefined();
+    });
+
   }); 
 });

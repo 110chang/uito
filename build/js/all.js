@@ -432,45 +432,84 @@ define("lib/almond", function(){});
 
 /*
 *
-*   Inherit r1
+*   Extend r1
 *
 *   @author Yuji Ito @110chang
 *
 */
 
-define('mod/inherit',[], function() {
-  var inherit = function() {
-    var i = 0, o = {}, F = function() {}, child, prop;
-    
-    for (; i < arguments.length; i++) {
-      for (prop in arguments[i]) {
-        o[prop] = arguments[i][prop];
+define('mod/extend',[], function() {
+  function extend() {
+    var i, l, o, p, prop;
+
+    o = Array.prototype.shift.call(arguments);
+    l = arguments.length;
+
+    if (l < 1 || o == null) {
+      return o;
+    }
+    for (i = 0; i < l; i++) {
+      p = arguments[i];
+      for (prop in p) {
+        o[prop] = p[prop];
       }
     }
-    F.prototype = o;
-    child = new F();
-    
-    return child;
-  };
+    return o;
+  }
   
-  return inherit;
+  return extend;
 });
 
 /*
 *
-*   Screen r2
+*   Like r1
 *
 *   @author Yuji Ito @110chang
 *
 */
 
-define('mod/screen',[], function() {
-  var Screen = {
+define('mod/like',[], function() {
+  function like(target, original) {
+    if (target == null) {
+      throw new Error('Invalid arguments.');
+    }
+    if (original == null) {
+      throw new Error('Invalid arguments.');
+    }
+    for (var prop in original) {
+      if (target[prop] === undefined) {
+        return false;
+      }
+    }
+    return true;
+  }
+  
+  return like;
+});
+
+/*
+*
+*   Screen r3
+*
+*   @author Yuji Ito @110chang
+*
+*/
+
+define('mod/screen',[
+  'mod/extend'
+], function(extend) {
+  function Screen() {
+    if (!(this instanceof Screen)) {
+      return new Screen();
+    }
+    return this;
+  }
+  extend(Screen.prototype, {
     width: function() {
-      return Screen.clientWidth();
+      return this.clientWidth();
     },
     height: function() {
-      return Screen.clientHeight();
+      return this.clientHeight();
     },
     scrollWidth: function() {
       return Math.max.apply(null, [
@@ -501,161 +540,97 @@ define('mod/screen',[], function() {
     clientHeight: function() {
       return document.clientHeight || document.documentElement.clientHeight;
     }
-  };
+  });
   
   return Screen;
 });
 
 /*
 *
-*   Nav.SmoothScroll r3
+*   Nav.Anchor r1.1
 *
 *   @author Yuji Ito @110chang
 *
 */
 
-define('mod/nav/smoothscroll',[
-  'mod/inherit',
+define('mod/nav/anchor',[
+  'mod/extend',
   'mod/screen'
-], function(inherit, Screen) {
+], function(extend, Screen) {
   var _instance = null;
   var defaults = {
     duration: 1000,
     easing: 'easeInOutExpo',
     fix: 0
   };
-  var SmoothScroll = {
-    $a:  $('a[href*=#]'),
-    conf: {},
-
-    init: function(options) {
-      $.extend(this.conf, defaults, options || {});
-      this.$a.off('click.smoothScroll')
-        .on('click.smoothScroll', $.proxy(this._onClick, this));
-
-      return this;
-    },
-    _onClick: function(e) {
-      var el = e.currentTarget;
-      var $target, targetOffset, scrollHeight, clientHeight;
-      var samePath = location.pathname.replace(/^\//,'') === el.pathname.replace(/^\//,'');
-      var sameHost = location.hostname === el.hostname;
-
-      if (el.hash.match(/^#\W/)) {
-        return;
-      }
-      if (samePath && sameHost) {
-        $target = $(el.hash);
-        $target = $target.length && $target || $('[name=' + el.hash.slice(1) +']');
-        if ($target.length) {
-          targetOffset = $target.offset().top - this.conf.fix;
-          targetOffset = targetOffset < 0 ? 0 : targetOffset;
-          scrollHeight = Screen.scrollHeight();
-          clientHeight = Screen.clientHeight();
-          //console.log((targetOffset + clientHeight) +','+ scrollHeight);
-          if ((targetOffset + clientHeight) > scrollHeight) {
-            targetOffset = scrollHeight - clientHeight;
-          }
-          $('html,body').animate({scrollTop: targetOffset}, this.conf.duration, this.conf.easing);
-          return false;
-        }
+  function Anchor() {
+    if (_instance != null) {
+      return _instance;
+    } else {
+      if (!(this instanceof Anchor)) {
+        _instance = new Anchor();
+      } else {
+        _instance = this;
       }
     }
-  };
-
-  if (_instance === null) {
-    _instance = inherit(SmoothScroll).init();
+    return _instance;
   }
-  
-  return _instance;
-});
-/*
-*
-*   Utils._ie
-*
-*/
-
-define('mod/utils/_ie',[], function() {
-  return (function() { 
-    var undef, v = 3, div = document.createElement('div');
-    while (
-      div.innerHTML = '<!--[if gt IE '+(++v)+']><i></i><![endif]-->',
-      div.getElementsByTagName('i')[0]
-    );
-    return v > 4 ? v : undef;
-  }());
-});
-
-/*
-*
-*   Utils.Browser r1
-*
-*   @author Yuji Ito @110chang
-*
-*/
-
-define('mod/browser',[
-  'mod/utils/_ie'
-], function(_ie) {
-  var _userAgent = navigator.userAgent,
-    _is_IE       = /MSIE/.test(_userAgent),
-    _is_iPhone   = /iPhone/.test(_userAgent),
-    _is_iPad     = /iPad/.test(_userAgent),
-    _is_Android  = /Android/.test(_userAgent),
-    _is_Mobile   = /Mobile/.test(_userAgent), // Android only
-    _is_windows  = /Win/.test(navigator.platform),
-    _is_mac      = /Mac/.test(navigator.platform),
-    _is_WebKit   = /Chrome|Safari/.test(_userAgent),
-    
-    Browser = {
-      IE          : _is_IE,
-      iPhone      : _is_iPhone,
-      iPad        : _is_iPad,
-      Android     : _is_Android,
-      WebKit      : _is_WebKit,
-      platform    : {
-        windows : _is_windows,
-        mac     : _is_mac
-      },
-      ie          : _ie,
-      mobile      : _is_iPhone || _is_iPad || _is_Android,
-      smallScreen : _is_iPhone || (_is_Android && _is_Mobile),
-      tablet      : _is_iPad || (_is_Android && !_is_Mobile),
-      
-      __test__: function(userAgent) {
-        if (!userAgent) {
-          throw new Error('Require test string.');
-        }
-        _userAgent  = userAgent;
-        _is_IE      = /MSIE/.test(_userAgent);
-        _is_iPhone  = /iPhone/.test(_userAgent);
-        _is_iPad    = /iPad/.test(_userAgent);
-        _is_Android = /Android/.test(_userAgent);
-        _is_Mobile  = /Mobile/.test(_userAgent); // Android only
-        _is_windows = /Win/.test(navigator.platform);
-        _is_mac     = /Mac/.test(navigator.platform);
-        _is_WebKit  = /Chrome|Safari/.test(_userAgent);
-        
-        this.IE          = _is_IE;
-        this.iPhone      = _is_iPhone;
-        this.iPad        = _is_iPad;
-        this.Android     = _is_Android;
-        this.WebKit      = _is_WebKit;
-        this.platform    = {
-          windows  : _is_windows,
-          mac    : _is_mac
-        };
-        this.mobile      = _is_iPhone || _is_iPad || _is_Android;
-        this.smallScreen = _is_iPhone || (_is_Android && _is_Mobile);
-        this.tablet      = _is_iPad || (_is_Android && !_is_Mobile);
-        
-        return this;
+  extend(Anchor.prototype, {
+    initialize: function(options) {
+      this.conf = $.extend({}, defaults, options || {});
+      this.$a = $('a[href*=#]');
+      this.$a.off('click.navAnchor')
+        .on('click.navAnchor', $.proxy(this._onClick, this));
+    },
+    _onClick: function(e) {
+      if (e.currentTarget.hash.match(/^#\W/)) {
+        return;//exclude non anchor, routing /#!/ /#/ and so.
       }
-    };
-  
-  return Browser;
-});
+      var el = e.currentTarget;
+      var $target = this._getTarget(el.hash);
+      var pathIsSame = this._pathIsSame(el.pathname);
+      var hostIsSame = this._hostIsSame(el.hostname);
+      if ($target && pathIsSame && hostIsSame) {
+        this._doAnimation($target);
+        return false;
+      }
+    },
+    _doAnimation: function($el) {
+      var targetOffset = $el.offset().top - this.conf.fix;
+      var scrollHeight = Screen().scrollHeight();
+      var clientHeight = Screen().clientHeight();
+      //console.log((targetOffset + clientHeight) +','+ scrollHeight);
+      if (targetOffset < 0) {
+        targetOffset = 0;
+      }
+      if ((targetOffset + clientHeight) > scrollHeight) {
+        targetOffset = scrollHeight - clientHeight;
+      }
+      $('body, html').animate({
+        scrollTop: targetOffset
+      }, this.conf.duration, this.conf.easing).promise().done(
+        $.proxy(this._onAnimationComplete, this, {$el: $el})
+      );
+    },
+    _onAnimationComplete: function(data) {
+      $(window).trigger(Anchor.ANIMATION_FINISH, {$el: data.$el});
+    },
+    _getTarget: function(hash) {
+      var $target = $(hash);
+      return $target.length > 0 && $target || $('[name=' + hash.slice(1) +']');
+    },
+    _pathIsSame: function(path) {
+      path = /^\/.+/.test(path) ? path : '/' + path;// supple start `/` on fxxk IE9
+      return location.pathname.slice(1) === path.slice(1);
+    },
+    _hostIsSame: function(host) {
+      return location.hostname === host;
+    }
+  });
+  Anchor.ANIMATION_FINISH = 'anchorAnimationFinish';
 
+  return Anchor;
+});
 /*
  *
  *   Main 
@@ -671,12 +646,22 @@ requirejs.config({
 });
 
 require([
-  'mod/nav/smoothscroll',
-  'mod/screen',
-  'mod/browser'
-], function(smoothScroll, Screen, Browser) {
+  'mod/extend',
+  'mod/like',
+  'mod/nav/anchor'
+], function(extend, like, Anchor) {
   $(function() {
     console.log('DOM ready.');
+    var $navAnchor = $('#nav-anchor');
+
+    if ($navAnchor.size() > 0) {
+      Anchor().initialize({
+        fix: 100
+      });
+      $(window).on(Anchor.ANIMATION_FINISH, function(e) {
+        console.log('Anchor animation finish.');
+      });
+    }
     
   });
 });

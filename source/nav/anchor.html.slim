@@ -1,0 +1,32 @@
+---
+id: nav-anchor
+category: nav
+label: ホーム
+layout: layout
+title: Nav/Anchor
+---
+
+/
+/ Nav/Anchor
+/
+
+nav
+  ul
+    - [*1..5].each do |v|
+      li
+        - link_to "#s#{v}" do ||
+          = "s#{v}"
+
+
+- [*1..5].each do |v|
+  div id="s#{v}" style="height:600px;"
+    = "s#{v}"
+    p
+      - link_to "http://example.com" do ||
+        = "example.com"
+    p
+      - link_to "#/top" do ||
+        = "expect ignore routing"
+    p
+      - link_to "#masthead" do ||
+        = "goto page top"

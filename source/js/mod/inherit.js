@@ -1,25 +1,22 @@
 /*
 *
-*   Inherit r1
+*   Inherit r2
 *
 *   @author Yuji Ito @110chang
 *
 */
 
 define([], function() {
-  var inherit = function() {
-    var i = 0, o = {}, F = function() {}, child, prop;
-    
-    for (; i < arguments.length; i++) {
-      for (prop in arguments[i]) {
-        o[prop] = arguments[i][prop];
-      }
+  function inherit(d, b) {
+    if (d == null || b == null) {
+      return d;
     }
-    F.prototype = o;
-    child = new F();
-    
-    return child;
-  };
+    var F = function() {};
+    F.prototype = b.prototype;
+    d.prototype = new F();
+    d.prototype.constructor = d;
+    return d;
+  }
   
   return inherit;
 });

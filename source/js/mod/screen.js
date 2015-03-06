@@ -1,18 +1,26 @@
 /*
 *
-*   Screen r2
+*   Screen r3
 *
 *   @author Yuji Ito @110chang
 *
 */
 
-define([], function() {
-  var Screen = {
+define([
+  'mod/extend'
+], function(extend) {
+  function Screen() {
+    if (!(this instanceof Screen)) {
+      return new Screen();
+    }
+    return this;
+  }
+  extend(Screen.prototype, {
     width: function() {
-      return Screen.clientWidth();
+      return this.clientWidth();
     },
     height: function() {
-      return Screen.clientHeight();
+      return this.clientHeight();
     },
     scrollWidth: function() {
       return Math.max.apply(null, [
@@ -43,7 +51,7 @@ define([], function() {
     clientHeight: function() {
       return document.clientHeight || document.documentElement.clientHeight;
     }
-  };
+  });
   
   return Screen;
 });

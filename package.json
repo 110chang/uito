@@ -10,6 +10,7 @@
     "grunt-contrib-watch": "~0.3.1",
     "grunt-middleman": "~0.1.2",
     "grunt-template-jasmine-requirejs": "^0.2.0",
+    "jasmine-jquery": "^2.0.5",
     "jshint": "^2.5.10",
     "load-grunt-tasks": "^1.0.0",
     "matchdep": "~0.1.1"

@@ -1,85 +1,109 @@
-// #######################################
-//
-//   mod/geom/Vector
-//
-// #######################################
+/*
+*
+*   geom.Vector r1
+*
+*   @author Yuji Ito @110chang
+*
+*/
 
 define([
-  'mod/inherit',
-  'mod/compare'
-], function(inherit, compare) {
-  var Vector = {
-    x: 0,
-    y: 0,
+  'mod/extend',
+  'mod/like'
+], function(extend, like) {
+  var sin  = Math.sin;
+  var cos  = Math.cos;
+  var sqrt = Math.sqrt;
+  var asin = Math.asin;
+  var acos = Math.acos;
+  var PI   = Math.PI;
+
+  function polarToComponent(mag, dir) {
+    var x = mag * cos(dir * PI / 180);
+    var y = mag * sin(dir * PI / 180);
+      
+    return { x: x, y: y };
+  }
+  function componentToPolar(x, y) {
+    var mag = sqrt(x * x + y * y);
+    var dir = 0;
+    
+    if (mag === 0) {
+      return { mag: mag, dir: dir };
+    }
+    dir = (180 / PI) * asin(y / mag);
+    
+    if (x < 0) {
+      dir = 180 - dir;
+    } else if (x < 0 && y < 0) {
+      dir += 360;
+    }
+    return { mag: mag, dir: dir };
+  }
+  function Vector(a, b, isComponent) {
+    if (!(this instanceof Vector)) {
+      return new Vector(a, b, isComponent);
+    }
+    a = a == null ? 0 : a;
+    b = b == null ? 0 : b;
+    isComponent = isComponent == null ? true : isComponent;
+    
+    if (typeof a !== 'number' || typeof b !== 'number') {
+      throw new Error('Arguments must be Number.');
+    }
+    var o, x, y, mag, dir;
+
+    if (isComponent) {
+      x = a;
+      y = b;
+      o = componentToPolar(a, b);
+      mag = o.mag;
+      dir = o.dir;
+    } else {
+      mag = a;
+      dir = b;// Degree
+      o = polarToComponent(a, b);
+      x = o.x;
+      y = o.y;
+    }
+    this.x = x;
+    this.y = y;
+    this.magnitude = mag;
+    this.direction = dir;
+  }
+  extend(Vector.prototype, {
+    x        : 0,
+    y        : 0,
     magnitude: 0,
     direction: 0,
-    
-    init: function(a, b, isComponent) {
-      if (isComponent === undefined || isComponent === null) {
-        isComponent = true;
-      }
-      if (isComponent) {
-        this.x = a;
-        this.y = b;
-        var polar = this.componentToPolar(a, b);
-        this.magnitude = polar.mag;
-        this.direction = polar.dir;
-      } else {
-        this.magnitude = a;
-        this.direction = b;// Degree
-        var comp = this.polarToComponent(a, b);
-        this.x = comp.x;
-        this.y = comp.y;
-      }
-      return this;
-    },
-    polarToComponent: function(mag, dir) {
-      var x = mag * Math.cos(dir * Math.PI / 180),
-        y = mag * Math.sin(dir * Math.PI / 180);
-        
-      return { x: x, y: y };
-    },
-    componentToPolar: function(x, y) {
-      var mag = Math.sqrt(x * x + y * y),
-        dir = 0;
-      
-      if (mag === 0) {
-        return { mag: mag, dir: dir};
-      }
-      dir = (180 / Math.PI) * Math.asin(y / mag);
-      
-      if (x < 0) {
-        dir = 180 - dir;
-      } else if (x < 0 && y < 0) {
-        dir += 360;
-      }
-      return { mag: mag, dir: dir};
-    },
+
     getComponent: function() {
       return { x: this.x, y: this.y };
     },
     getPolar: function() {
-      return { mag: this.magnitude, dir: this.direction };
+      return {
+        magnitude: this.magnitude,
+        direction: this.direction
+      };
     },
     add: function(vector) {
-      if (!compare(vector, this)) {
-        throw "arguments must be Vector.";
+      if (!like(vector, Vector.prototype)) {
+        throw new Error('Arguments must be Vector.');
       }
       this.x += vector.x;
       this.y += vector.y;
-      var polar = this.componentToPolar(this.x, this.y);
+      var polar = componentToPolar(this.x, this.y);
       this.magnitude = polar.mag;
       this.direction = polar.dir;
       
       return this;
     },
     sub: function(vector){
-      if (!compare(vector, this)) {
-        throw "arguments must be Vector.";
+      if (!like(vector, Vector.prototype)) {
+        throw new Error('Arguments must be Vector.');
       }
       this.x -= vector.x;
       this.y -= vector.y;
-      var polar = this.componentToPolar(this.x, this.y);
+      var polar = componentToPolar(this.x, this.y);
       this.magnitude = polar.mag;
       this.direction = polar.dir;
       
@@ -87,40 +111,38 @@ define([
     },
     scalarMultiply: function(num){
       if (typeof num !== 'number') {
-        throw "arguments must be Number.";
+        throw new Error('Arguments must be Number.');
       }
       this.x *= num;
       this.y *= num;
-      var polar = this.componentToPolar(this.x, this.y);
+      var polar = componentToPolar(this.x, this.y);
       this.magnitude = polar.mag;
       this.direction = polar.dir;
       
       return this;
     },
     innerProduct: function(vector) {
-      //console.log(vector);
-      if (!compare(vector, this)) {
-        throw "arguments must be Vector.";
+      if (!like(vector, Vector.prototype)) {
+        throw new Error('Arguments must be Vector.');
       }
       return this.x * vector.x + this.y * vector.y;
     },
     crossProduct: function(vector) {
-      //return only magnitude in 2D Vector
-      if (!compare(vector, this)) {
-        throw "arguments must be Vector.";
+      if (!like(vector, Vector.prototype)) {
+        throw new Error('Arguments must be Vector.');
       }
       return this.x * vector.y - this.y * vector.x;
     },
-    getAngle: function(vector) {
-      if (!compare(vector, this)) {
-        throw "arguments must be Vector.";
+    angleBetween: function(vector) {
+      if (!like(vector, Vector.prototype)) {
+        throw new Error('Arguments must be Vector.');
       }
-      return Math.acos(this.innerProduct(vector) / this.magnitude * vector.magnitude);
+      return acos(this.innerProduct(vector) / this.magnitude * vector.magnitude);
     },
     normalize: function(){
-      return inherit(Vector).init(1, this.direction, false);
+      return new Vector(1, this.direction, false);
     }
-  };
+  });
 
   return Vector;
 });
