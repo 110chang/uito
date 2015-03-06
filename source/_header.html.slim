@@ -3,5 +3,14 @@
 /
 
 header#masthead
+  .layout-wrapper
+    h1
+      | ヘッダー
+    ul.controls
+      li
+        - link_to "#show-outline", class: "btn-show" do ||
+          i class="fa fa-paint-brush"
+        - link_to "#hide-outline", class: "btn-hide" do ||
+          i class="fa fa-eraser"
 
 = NEWLINE

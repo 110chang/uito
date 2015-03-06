@@ -12,6 +12,8 @@ html lang="ja"
     meta name="keywords" content="#{get_meta('keywords')}"
     meta name="description" content="#{get_meta('description')}"
     meta http-equiv="X-UA-Compatible" content="IE=Edge, chrome=1"
+    link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"
+
     /meta name="author" content="yuji ito"
     /
     / styles
@@ -48,11 +50,12 @@ html lang="ja"
   body id="#{current_page.data.id}" class="cat-#{current_page.data.category}"
     /- if build? 
     /  = partial 'facebook_root_tags'
-    = partial 'header'
-    article#main
-      = yield
-    = NEWLINE
-    = NEWLINE
-    = partial 'footer'
+    #show-outline
+      = partial 'header'
+      article#main
+        = yield
+      = NEWLINE
+      = NEWLINE
+      = partial 'footer'
 
 / EOF

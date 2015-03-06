@@ -117,58 +117,62 @@ input.placeholder {
 }
 
 /* ===== Layout modules ===== */
-.mod-layout-plane {
+.layout-wrapper {
   position: relative;
   width: 960px;
-  margin: 40px auto;
-  padding: 0;
+  margin: 0 auto;
 }
 
-.mod-layout-border {
-  position: relative;
-  width: 880px;
-  margin: 40px auto;
-  padding: 36px;
-  border: 2px solid #808080;
+.layout-column {
+  /* For IE 6/7 (trigger hasLayout) */
+  zoom: 1;
+  /* For modern browsers */
+}
+.layout-column:before, .layout-column:after {
+  content: "";
+  display: block;
+  overflow: hidden;
+}
+.layout-column:after {
+  clear: both;
+}
+
+.layout-column-main {
+  float: left;
+  width: 730px;
+}
+
+.layout-column-side {
+  float: right;
+  width: 180px;
 }
 
 /* ===== Section modules ===== */
-.mod-section {
+.contents {
   position: relative;
 }
-.mod-section > * {
+.contents > * {
   margin: 40px 0;
   background: #F0F0F0;
 }
-.mod-section *:first-child {
+.contents *:first-child {
   margin-top: 0;
 }
-.mod-section *:last-child {
+.contents *:last-child {
+  margin-bottom: 0;
+}
+.contents .contents > * {
+  margin: 20px 0;
+  background: #F8F8F8;
+}
+.contents .contents *:first-child {
+  margin-top: 0;
+}
+.contents .contents *:last-child {
   margin-bottom: 0;
 }
 
-/* ===== Content modules ===== */
-.mod-content {
-  position: relative;
-}
-.mod-content > * {
-  margin: 1em 0;
-  background: #F8F8F8;
-}
-.mod-content:before {
-  content: "CN";
-  position: absolute;
-  left: 0;
-  top: 0;
-  padding: 1px;
-  background: #9C3;
-  color: #FFF;
-  font-size: 10px;
-  line-height: 120%;
-  font-family: Helvetica, sans-serif;
-  font-weight: bold;
-}
-
+/* ===== Elements ===== */
 /* ===== Styling modules ===== */
 .simple-list li {
   padding: 5px;
@@ -205,9 +209,16 @@ input.placeholder {
   background: #F8F8F8;
 }
 
-.simple-panel {
-  padding: 5px;
-  border: 1px solid #CCC;
+.form-table {
+  width: 100%;
+}
+.form-table th[scope=row] {
+  width: 20%;
+}
+
+.panel {
+  padding: 20px;
+  border: 2px solid #CCC;
   border-radius: 6px;
   background: #FFF;
 }
@@ -218,7 +229,31 @@ input.placeholder {
  *
  * ============================ */
 #masthead {
+  position: relative;
   width: 100%;
+  margin: 0 0 40px;
+  background: #EEE;
+}
+
+.controls {
+  position: absolute;
+  right: 5px;
+  top: 2px;
+}
+.controls li {
+  display: inline-block;
+  font-size: 1.125rem;
+  line-height: 120%;
+}
+.controls a {
+  display: inline-block;
+  padding: 2px 5px;
+}
+.controls .btn-show {
+  display: inline-block;
+}
+.controls .btn-hide {
+  display: none;
 }
 
 /* ============================
@@ -228,6 +263,7 @@ input.placeholder {
  * ============================ */
 #main {
   position: relative;
+  margin: 40px 0;
 }
 
 /* ============================
@@ -246,22 +282,46 @@ input.placeholder {
  * ============================ */
 @media screen and (max-width: 1023px) {
   /* ===== Layout modules ===== */
-  .mod-layout-1-col {
-    box-sizing: border-box;
-    width: auto;
-    margin: 20px;
-    padding: 20px;
+  .layout-wrapper {
+    width: 100%;
+  }
+
+  .layout-column-main {
+    float: none;
+    width: 100%;
+    margin: 0 0 20px;
+  }
+
+  .layout-column-side {
+    float: none;
+    width: 100%;
   }
 
   /* ===== Section modules ===== */
-  .mod-section > * {
+  .contents > * {
     margin: 20px 0;
   }
-  .mod-section > *:first-child {
-    margin-top: 0;
+  .contents .contents > * {
+    margin: 10px 0;
   }
-  .mod-section > *:last-child {
-    margin-bottom: 0;
+  .contents .mobile-garter {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
+  /* ===== Styling modules ===== */
+  .border-list li {
+    box-sizing: border-box;
+    margin: 5px 0;
+    padding: 5px;
+  }
+
+  .simple-table th, .simple-table td {
+    padding: 5px;
+  }
+
+  .border-table th, .border-table td {
+    padding: 5px;
   }
 }
 /* ============================
@@ -275,24 +335,94 @@ input.placeholder {
     line-height: 160%;
   }
 
-  /* ===== Layout modules ===== */
-  .mod-layout-1-col {
+  /* ===== Styling modules ===== */
+  .form-table {
+    width: 100%;
+  }
+  .form-table th, .form-table td {
+    display: block;
+    border: 0;
+    border-bottom: 1px solid #CCC;
+  }
+  .form-table th[scope=row] {
     box-sizing: border-box;
     width: 100%;
-    margin: 20px 0;
-    padding: 10px;
-    border-left: 0;
-    border-right: 0;
   }
 
+  .panel {
+    padding: 10px;
+  }
+}
+/* ============================
+ * 
+ *     Outline visualizer
+ *
+ * ============================ */
+#show-outline:target {
+  /* ===== Layout modules ===== */
   /* ===== Section modules ===== */
-  .mod-section > * {
-    margin: 10px 0;
-  }
-  .mod-section > *:first-child {
-    margin-top: 0;
-  }
-  .mod-section > *:last-child {
-    margin-bottom: 0;
-  }
+}
+#show-outline:target .controls .btn-show {
+  display: none;
+}
+#show-outline:target .controls .btn-hide {
+  display: inline-block;
+}
+#show-outline:target .layout-wrapper {
+  box-sizing: border-box;
+  padding: 1px;
+  border: 1px dotted #000;
+}
+#show-outline:target .layout-column {
+  box-sizing: border-box;
+  padding: 1px;
+  border: 1px dotted #000;
+}
+#show-outline:target .layout-column-main {
+  box-sizing: border-box;
+  padding: 1px;
+  border: 1px dotted #000;
+}
+#show-outline:target .layout-column-side {
+  box-sizing: border-box;
+  padding: 1px;
+  border: 1px dotted #000;
+}
+#show-outline:target .contents {
+  box-sizing: border-box;
+  padding: 1px;
+  border: 1px solid #6CF;
+}
+#show-outline:target .contents > *:not(.contents) {
+  position: relative;
+}
+#show-outline:target .contents > *:not(.contents):before {
+  content: "EL";
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding: 0 0.25em;
+  background: #6CF;
+  color: #FFF;
+  font-size: 0.75rem;
+  line-height: 160%;
+}
+#show-outline:target .contents .contents {
+  box-sizing: border-box;
+  padding: 1px;
+  border: 1px solid #6CF;
+}
+#show-outline:target .contents .contents > *:not(.contents) {
+  position: relative;
+}
+#show-outline:target .contents .contents > *:not(.contents):before {
+  content: "EL";
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding: 0 0.25em;
+  background: #6CF;
+  color: #FFF;
+  font-size: 0.75rem;
+  line-height: 160%;
 }

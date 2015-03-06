@@ -14,74 +14,86 @@ title: UITO - My toolbox
 - require 'Set'
 - Faker::Config.locale = :ja
 
-section.mod-layout-plane
-  section.mod-section
-    section.mod-content
-      h1
-        | それは今朝すでにある講演らというのの以上にもつですた
-      p
-        | それは今朝すでにある講演らというのの以上にもつですた。てんで晩が蹂躙者はただいまこの保留なでしまでに知れと来るありをも混同するだませて、そうには聴いべきだなまし。
-      p
-        | 双方につけ込むんのはついに場合によほどたあるです。まあ岩崎さんに経験一つ始終合点を見た個性そんな鷹狩いずれか所有をにおいて実応用ですたただっけれども、その前も私か味気持から乗っで、嘉納さんの事を孔雀のここのあたかもお戦争として私人からご不足がなれようにどうかお忠告をするたいたて、とにかくとこう経過に黙っですばみた事から願いないん。そうしてそれでお応があっものは多少自由としだて、その心でも思うだてとかいう兄を済んがいるだた。
+section.layout-wrapper.layout-column.layout-visualizer
+  section.layout-column-main
+    section.contents
+      section.contents
+        section.contents.mobile-garter
+          h1
+            | それは今朝すでにある講演らというのの以上にもつですた
+          p
+            | それは今朝すでにある講演らというのの以上にもつですた。てんで晩が蹂躙者はただいまこの保留なでしまでに知れと来るありをも混同するだませて、そうには聴いべきだなまし。
+          p
+            | 双方につけ込むんのはついに場合によほどたあるです。まあ岩崎さんに経験一つ始終合点を見た個性そんな鷹狩いずれか所有をにおいて実応用ですたただっけれども、その前も私か味気持から乗っで、嘉納さんの事を孔雀のここのあたかもお戦争として私人からご不足がなれようにどうかお忠告をするたいたて、とにかくとこう経過に黙っですばみた事から願いないん。そうしてそれでお応があっものは多少自由としだて、その心でも思うだてとかいう兄を済んがいるだた。
+        table.simple-table.form-table
+          tbody
+            - 3.times do ||
+              tr
+                th scope="row"
+                  = Faker::Name.name
+                td
+                  = slls text_field_tag("input")
 
-    section.mod-content
-      h1
-        | そのため垣覗きのためその途は私中をするべきかと嘉納さんを行くですで
-      p
-        | そのため垣覗きのためその途は私中をするべきかと嘉納さんを行くですで、国の先刻なという不発展なけれですならから、漫然の時を文章が元来かもの本場で先刻かれて行くと、ずいぶんの偶然が出からこの中を引続きさなずとしない事なて、高いなあって全く大用いなのましなだ。
-      p
-        | つまり首か面倒か出立をなっましのに、ほかごろ釣堀にするているん後を今奨励の将来がおくんある。絶対にはいったい欠けから云いなたですないが、もっともいよいよなっので発展も更にないた方る。またご学習に立てるてもいでのましので、校長には、もし何かやっば聞いせるでん思われるありでとありて、画も作ってしまいですなけれ。
-      table.simple-table
-        thead
-          tr
-            th scope="col"
-              | 名前
-            th scope="col"
-              | 市町村
-            th scope="col"
-              | 郵便番号
-        tbody
-          - 3.times do ||
-            tr
-              td
-                = Faker::Name.name
-              td
-                = Faker::Address.city
-              td
-                = Faker::Address.postcode
 
-section.mod-layout-border
-  section.mod-section
-    section.mod-content
-      table.border-table
-        tbody
-          tr
-            th scope="row"
-              | 名前
-            - 3.times do ||
-              td
-                = Faker::Name.name
-          tr
-            th scope="row"
-              | 市町村
-            - 3.times do ||
-              td
-                = Faker::Address.city
-          tr
-            th scope="row"
-              | 郵便番号
-            - 3.times do ||
-              td
-                = Faker::Address.postcode
-      ul.simple-list
-        - 5.times do ||
-          li
-            = Faker::Business.credit_card_number
-      ul.border-list
-        - 5.times do ||
-          li
-            = Faker::Business.credit_card_number
-      section.simple-panel
+      section.contents.mobile-garter.panel
+        h1
+          | そのため垣覗きのためその途は私中をするべきかと嘉納さんを行くですで
         p
-          | むくむく必ずしもももし主義といういでて、私には当時末などそれのお専攻は悪いいういるうだ。それは毫も講演のはずをご学習は申しているないですませないから、一十の一つに多少出たという話ませて、ただその作物の自分に接しれるて、私かを私の威力が話をいるがおきないのたないと関係歩くけれども約束見下し得るただ。他のかつ嘉納さんにたとえばこうするう方だますなけれ。
+          | そのため垣覗きのためその途は私中をするべきかと嘉納さんを行くですで、国の先刻なという不発展なけれですならから、漫然の時を文章が元来かもの本場で先刻かれて行くと、ずいぶんの偶然が出からこの中を引続きさなずとしない事なて、高いなあって全く大用いなのましなだ。
+        p
+          | つまり首か面倒か出立をなっましのに、ほかごろ釣堀にするているん後を今奨励の将来がおくんある。絶対にはいったい欠けから云いなたですないが、もっともいよいよなっので発展も更にないた方る。またご学習に立てるてもいでのましので、校長には、もし何かやっば聞いせるでん思われるありでとありて、画も作ってしまいですなけれ。
+        table.simple-table
+          thead
+            tr
+              th scope="col"
+                | 名前
+              th scope="col"
+                | 市町村
+              th scope="col"
+                | 郵便番号
+          tbody
+            - 3.times do ||
+              tr
+                td
+                  = Faker::Name.name
+                td
+                  = Faker::Address.city
+                td
+                  = Faker::Address.postcode
+      section.contents
+        section.contents
+          table.border-table.mobile-garter
+            tbody
+              tr
+                th scope="row"
+                  | 名前
+                - 3.times do ||
+                  td
+                    = Faker::Name.name
+              tr
+                th scope="row"
+                  | 市町村
+                - 3.times do ||
+                  td
+                    = Faker::Address.city
+              tr
+                th scope="row"
+                  | 郵便番号
+                - 3.times do ||
+                  td
+                    = Faker::Address.postcode
+          ul.simple-list
+            - 5.times do ||
+              li
+                = Faker::Business.credit_card_number
+        section.contents.mobile-garter
+          ul.border-list
+            - 5.times do ||
+              li
+                = Faker::Business.credit_card_number
+          section.simple-panel
+            p
+              | むくむく必ずしもももし主義といういでて、私には当時末などそれのお専攻は悪いいういるうだ。それは毫も講演のはずをご学習は申しているないですませないから、一十の一つに多少出たという話ませて、ただその作物の自分に接しれるて、私かを私の威力が話をいるがおきないのたないと関係歩くけれども約束見下し得るただ。他のかつ嘉納さんにたとえばこうするう方だますなけれ。
 
+  section.layout-column-side
+    p sidebar

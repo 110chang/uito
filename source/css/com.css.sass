@@ -59,58 +59,91 @@ $grt_middle: 20px
 $grt_small: 10px
 $grt_thin: 5px
 
+=layout-visualizer
+  box-sizing: border-box
+  padding: 1px
+  border: 1px dotted #000
+
+=contents-visualizer
+  box-sizing: border-box
+  padding: 1px
+  border: 1px solid #6CF
+
+=element-visualizer
+  position: relative
+  &:before
+    content: "EL"
+    position: absolute
+    left: 0
+    top: 0
+    padding: 0 0.25em
+    background: #6CF
+    color: #FFF
+    font-size: 0.75rem
+    line-height: 160%
+
 /* ===== Layout modules ===== */
 
-.mod-layout-plane
+.layout-wrapper
   position: relative
   width: 960px
-  margin: $grt_large auto
-  padding: 0
+  margin: 0 auto
+  //+layout-visualizer()
 
-.mod-layout-border
-  position: relative
-  width: 960px - 80
-  margin: $grt_large auto
-  padding: $grt_large - 4px
-  border: 2px solid #808080
+.layout-column
+  //+layout-visualizer()
+  /* For IE 6/7 (trigger hasLayout) */
+  zoom: 1
+  /* For modern browsers */
+  &:before, &:after
+    content: ""
+    display: block
+    overflow: hidden
+  &:after
+    clear: both
+
+.layout-column-main
+  float: left
+  width: 730px
+  //+layout-visualizer()
+
+.layout-column-side
+  float: right
+  width: 180px
+  //+layout-visualizer()
 
 /* ===== Section modules ===== */
 
 // `Section module` define margin between group of contents
 // element belongs `Section modules` has vertical margin, hasnt horizontal margin.
 
-.mod-section
+.contents
   position: relative
+  //+contents-visualizer()
   &>*
     margin: $grt_large 0
     background: #F0F0F0
+  &>*:not(.contents)
+    //+element-visualizer()
   *:first-child
     margin-top: 0
   *:last-child
     margin-bottom: 0
 
-/* ===== Content modules ===== */
+  .contents
+    &>*
+      margin: $grt_middle 0
+      background: #F8F8F8
+    *:first-child
+      margin-top: 0
+    *:last-child
+      margin-bottom: 0
+
+/* ===== Elements ===== */
 
 // `Content module` define margin between each of elements
 // element belongs `Content modules` has vertical margin, hasnt horizontal margin.
 
-.mod-content
-  position: relative
-  &>*
-    margin: 1em 0
-    background: #F8F8F8
-  &:before
-    content: "CN"
-    position: absolute
-    left: 0
-    top: 0
-    padding: 1px
-    background: #9C3
-    color: #FFF
-    font-size: 10px
-    line-height: 120%
-    font-family: Helvetica, sans-serif
-    font-weight: bold
 
 /* ===== Styling modules ===== */
 
@@ -129,7 +162,6 @@ $grt_thin: 5px
     border: 1px solid #CCC
     background: #FFF
 
-
 .simple-table
   th, td
     padding: $grt_thin
@@ -147,11 +179,17 @@ $grt_thin: 5px
   th
     background: #F8F8F8
 
-.simple-panel
-  padding: $grt_thin
-  border: 1px solid #CCC
+.form-table
+  width: 100%
+  th[scope=row]
+    width: 20%
+
+.panel
+  padding: $grt_middle
+  border: 2px solid #CCC
   border-radius: 6px
   background: #FFF
+
 
 /* ============================
  * 
@@ -160,7 +198,26 @@ $grt_thin: 5px
  * ============================ */
 
 #masthead
+  position: relative
   width: 100%
+  margin: 0 0 $grt_large
+  background: #EEE
+
+.controls
+  position: absolute
+  right: 5px
+  top: 2px
+  li
+    display: inline-block
+    font-size: 1.125rem
+    line-height: 120%
+  a
+    display: inline-block
+    padding: 2px 5px
+  .btn-show
+    display: inline-block
+  .btn-hide
+    display: none
 
 /* ============================
  * 
@@ -170,6 +227,7 @@ $grt_thin: 5px
 
 #main
   position: relative
+  margin: $grt_large 0
 
 /* ============================
  * 
@@ -197,22 +255,52 @@ $grt_thin_tab: 5px
 
   /* ===== Layout modules ===== */
 
-  .mod-layout-1-col
-    box-sizing: border-box
-    width: auto
-    margin: $grt_large_tab
-    padding: $grt_large_tab
+  .layout-wrapper
+    width: 100%
+
+  .layout-column-main
+    float: none
+    width: 100%
+    margin: 0 0 $grt_large_tab
+
+  .layout-column-side
+    float: none
+    width: 100%
 
   /* ===== Section modules ===== */
 
-  .mod-section
+  // `Section module` define margin between group of contents
+  // element belongs `Section modules` has vertical margin, hasnt horizontal margin.
+
+  .contents
     &>*
       margin: $grt_large_tab 0
-    &>*:first-child
-      margin-top: 0
-    &>*:last-child
-      margin-bottom: 0
+    .contents
+      &>*
+        margin: $grt_middle_tab 0
 
+    .mobile-garter
+      margin-left: $grt_middle_tab
+      margin-right: $grt_middle_tab
+
+
+  /* ===== Styling modules ===== */
+
+  //.simple-list
+
+  .border-list
+    li
+      box-sizing: border-box
+      margin: $grt_small_tab 0
+      padding: $grt_thin_tab
+
+  .simple-table
+    th, td
+      padding: $grt_thin
+
+  .border-table
+    th, td
+      padding: $grt_thin
 
 /* ============================
  * 
@@ -226,25 +314,83 @@ $grt_thin_tab: 5px
     font-size: 75%
     line-height: 160%
 
+  /* ===== Styling modules ===== */
+
+  .form-table
+    width: 100%
+    th, td
+      display: block
+      border: 0
+      border-bottom: 1px solid #CCC
+    th[scope=row]
+      box-sizing: border-box
+      width: 100%
+
+  .panel
+    padding: $grt_middle_tab
+
+
+/* ============================
+ * 
+ *     Outline visualizer
+ *
+ * ============================ */
+
+=layout-visualizer
+  box-sizing: border-box
+  padding: 1px
+  border: 1px dotted #000
+
+=contents-visualizer
+  box-sizing: border-box
+  padding: 1px
+  border: 1px solid #6CF
+
+=element-visualizer
+  position: relative
+  &:before
+    content: "EL"
+    position: absolute
+    left: 0
+    top: 0
+    padding: 0 0.25em
+    background: #6CF
+    color: #FFF
+    font-size: 0.75rem
+    line-height: 160%
+
+#show-outline:target
+  
+  .controls
+    .btn-show
+      display: none
+    .btn-hide
+      display: inline-block
+
   /* ===== Layout modules ===== */
 
-  .mod-layout-1-col
-    box-sizing: border-box
-    width: 100%
-    margin: $grt_large_tab 0
-    padding: $grt_middle_tab
-    border-left: 0
-    border-right: 0
+  .layout-wrapper
+    +layout-visualizer()
+
+  .layout-column
+    +layout-visualizer()
+
+  .layout-column-main
+    +layout-visualizer()
+
+  .layout-column-side
+    +layout-visualizer()
 
   /* ===== Section modules ===== */
 
-  .mod-section
-    &>*
-      margin: $grt_middle_tab 0
-    &>*:first-child
-      margin-top: 0
-    &>*:last-child
-      margin-bottom: 0
+  .contents
+    +contents-visualizer()
+    &>*:not(.contents)
+      +element-visualizer()
 
+    .contents
+      +contents-visualizer()
+      &>*:not(.contents)
+        +element-visualizer()
 
 // EOF
