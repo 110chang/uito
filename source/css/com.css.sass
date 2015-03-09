@@ -187,9 +187,17 @@ $grt_thin: 5px
 .panel
   padding: $grt_middle
   border: 2px solid #CCC
-  border-radius: 6px
+  //border-radius: 6px
   background: #FFF
 
+.panel-has-heading
+  border: 2px solid #CCC
+  background: #FFF
+  .panel-heading
+    padding: $grt_middle
+    border-bottom: 2px solid #CCC
+  .panel-content
+    padding: $grt_middle
 
 /* ============================
  * 
@@ -329,6 +337,15 @@ $grt_thin_tab: 5px
   .panel
     padding: $grt_middle_tab
 
+  .panel-has-heading
+    .panel-heading
+      padding: $grt_middle_tab
+    .panel-content
+      padding: $grt_middle_tab
+
+  .panel-open
+    border-left: 0
+    border-right: 0
 
 /* ============================
  * 
