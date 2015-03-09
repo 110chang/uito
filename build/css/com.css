@@ -277,6 +277,40 @@ input.placeholder {
   margin: 40px 0;
 }
 
+.topicpaths {
+  margin: 40px auto;
+}
+.topicpaths ul {
+  letter-spacing: -0.3em;
+}
+.topicpaths li {
+  position: relative;
+  display: inline-block;
+  letter-spacing: 0;
+  margin-right: 5px;
+  padding-right: 15px;
+}
+.topicpaths li:before {
+  content: ">";
+  position: absolute;
+  right: 0;
+  top: 50%;
+  margin-top: -0.8em;
+}
+.topicpaths li:last-child {
+  margin-right: 0;
+  padding-right: 0;
+}
+.topicpaths li:last-child:before {
+  content: "";
+}
+.topicpaths a {
+  display: inline-block;
+  padding: 0 8px;
+  background: #F0F0F0;
+  border-radius: 6px;
+}
+
 /* ============================
  * 
  *     Footer - #colophon
@@ -374,6 +408,28 @@ input.placeholder {
   .panel-open {
     border-left: 0;
     border-right: 0;
+  }
+
+  #masthead {
+    margin: 0 0 20px;
+  }
+
+  #main {
+    margin: 20px 0;
+  }
+
+  .topicpaths {
+    margin: 20px 0;
+  }
+  .topicpaths ul {
+    box-sizing: border-box;
+    padding: 0 10px;
+    margin-bottom: -5px;
+  }
+  .topicpaths li {
+    margin-bottom: 5px;
+    margin-right: 2px;
+    padding-right: 10px;
   }
 }
 /* ============================

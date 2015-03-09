@@ -14,7 +14,17 @@ title: UITO - My toolbox
 - require 'Set'
 - Faker::Config.locale = :ja
 
-section.layout-wrapper.layout-column.layout-visualizer
+nav.layout-wrapper.topicpaths
+  ul
+    - [*1..10].each do |v|
+      li
+        - link_to "#" do ||
+          = Faker::Lorem.word
+    li
+      strong
+        = Faker::Lorem.word
+
+section.layout-wrapper.layout-column
   section.layout-column-main
     section.contents
       section.contents
