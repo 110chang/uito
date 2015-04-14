@@ -68,18 +68,18 @@ activate :livereload
 
 helpers do
   def slls(str)
-    str.gsub /\s\/>/, '>'
+    str.gsub(/\s\/>/, '>')
   end
   def slls_image_tag(url, options={})
-    (image_tag(url, options)).gsub /\s\/>/, '>'
+    (image_tag(url, options)).gsub(/\s\/>/, '>')
   end
 
   def slls_css_link_tag(*source)
-    (stylesheet_link_tag(*source)).gsub /\s\/>/, '>'
+    (stylesheet_link_tag(*source)).gsub(/\s\/>/, '>')
   end
 
   def slls_favicon_tag(*source)
-    (favicon_tag(*source)).gsub /\s\/>/, '>'
+    (favicon_tag(*source)).gsub(/\s\/>/, '>')
   end
 
   def get_meta(type, default=data.default)
@@ -88,40 +88,38 @@ helpers do
     current = default if current.nil?
   end
 
-  def get_additional_style(current=nil, settings=data.styles)
-    #p settings
-    path = nil
-    if settings then
-      settings.each do |key, value|
-        if current == key then
-          path = value
-        end
+  def get_page_styles(id=nil)
+    ids = id.split('-')
+    names = []
+    ids.size.times do |i|
+      tid = ids.take(i + 1).join('-')
+      path = "#{root}/source/css/#{tid}.css.sass"
+      if File.exist?(path)
+        names.push(tid)
       end
     end
-    return path
+
+    return names
   end
 
-  def get_data_main(current=nil, settings=data.scripts)
-    url = '/js'
-    options = {:relative => false}
-
-    if build? then
-      url << '/all'
-      options = {:relative => true}
-    else
-      url << '/main'
-    end
-
-    if settings then
-      settings.each do |id|
-        if current == id then
-          url << '-' << id
-        end
+  def get_data_main(id=nil)
+    ids = id.split('-')
+    name = ""
+    ids.size.times do |i|
+      tid = ids.take(i + 1).join('-')
+      path = "#{root}/source/js/main-#{tid}.js"
+      if File.exist?(path)
+        name = "-" + tid
       end
     end
 
-    url << '.js'
-    url = url_for(url, options)
+    if build?
+      name = "all" + name
+    else
+      name = "/js/main" + name + ".js"
+    end
+
+    return name
   end
 end
 
