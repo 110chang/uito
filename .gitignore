@@ -28,3 +28,22 @@ gruntfile.coffee
 
 # Ignore jasmine tmp
 /.grunt
+
+_SpecRunner.html
+source/js/mod/canvas.js
+source/js/mod/iterator.js
+source/js/mod/simpleslider.js
+source/js/mod/transitionslider.js
+source/js/mod/canvas/bitmapdata.js
+source/js/mod/canvas/command.js
+source/js/mod/canvas/commandfactory.js
+source/js/mod/geom/matrix/gaussjordanelimination.js
+source/js/mod/nav/simplescrollbar.js
+source/js/mod/nav/smoothscroll.js
+source/js/mod/simpleslider/nav.js
+source/js/mod/transitionslider/blind.js
+source/js/mod/transitionslider/fadeout.js
+source/js/mod/transitionslider/nav.js
+source/js/mod/transitionslider/slidein.js
+source/js/mod/transitionslider/tiling.js
+source/js/mod/transitionslider/transition.js

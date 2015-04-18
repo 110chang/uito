@@ -12,47 +12,51 @@ html lang="ja"
     meta name="keywords" content="#{get_meta('keywords')}"
     meta name="description" content="#{get_meta('description')}"
     meta http-equiv="X-UA-Compatible" content="IE=Edge, chrome=1"
+    link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"
+
     /meta name="author" content="yuji ito"
     /
     / styles
     /
-    = slls_css_link_tag 'com', :type => nil
+    = slls_css_link_tag 'com', type: nil, media: "all"
     = NEWLINE
-    - additional_style = get_additional_style(current_page.data.id)
-    - if !additional_style.nil?
-      = slls_css_link_tag additional_style, :type => nil
-      = NEWLINE
+    - page_styles = get_page_styles(current_page.data.id)
+    - if page_styles.size > 0
+      - page_styles.each do |style|
+        = slls_css_link_tag style, type: nil, media: "all"
+        = NEWLINE
     /
     / scripts
     /
-    = javascript_include_tag 'lib/modernizr', :type => nil
+    = javascript_include_tag 'lib/modernizr', type: nil
     = NEWLINE
     /[if lt IE 9]
-      = javascript_include_tag 'lib/respond.src', :type => nil
-      = NEWLINE
-    = javascript_include_tag 'lib/jquery', :type => nil
+      = javascript_include_tag 'lib/respond.src', type: nil
     = NEWLINE
-    = javascript_include_tag 'lib/jquery.easing', :type => nil
+    = javascript_include_tag 'lib/jquery', type: nil
+    = NEWLINE
+    = javascript_include_tag 'lib/jquery.easing', type: nil
     = NEWLINE
     - data_main = get_data_main(current_page.data.id)
     - if build?
-      = javascript_include_tag "lib/#{data_main}", :type => nil
+      = javascript_include_tag "lib/#{data_main}", type: nil
     - else
-      = javascript_include_tag 'lib/require', :type => nil, :'data-main' => data_main
+      = javascript_include_tag 'lib/require', type: nil, :'data-main' => data_main
     = NEWLINE
     /
     / others
     /
-    = slls_favicon_tag '/img/favicon.ico', :rel => "shortcut icon", :type => nil
+    = slls_favicon_tag '/img/favicon.ico', rel: "shortcut icon", type: nil
   = NEWLINE
   body id="#{current_page.data.id}" class="cat-#{current_page.data.category}"
     /- if build? 
     /  = partial 'facebook_root_tags'
-    = partial 'header'
-    article#main
-      = yield
-    = NEWLINE
-    = NEWLINE
-    = partial 'footer'
+    #show-outline
+      = partial 'header'
+      article#main
+        = yield
+      = NEWLINE
+      = NEWLINE
+      = partial 'footer'
 
 / EOF

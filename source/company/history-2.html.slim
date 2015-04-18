@@ -1,0 +1,31 @@
+---
+id: company-history-second
+category: company
+label: ホーム
+layout: layout
+title: UITO - My toolbox
+---
+
+/
+/ Company/History
+/
+
+section.layout-wrapper.layout-column
+  section.layout-column-main
+    section.contents
+      .company
+        p
+          = current_page.data.id
+        p
+          = id_array = current_page.data.id.split('-')
+        - id_array.size.times do |i|
+          p
+            - tid = id_array.take(i + 1).join('-')
+            - path = "#{root}/source/css/#{tid}.css.sass"
+            = path
+            = File.exist?(path)
+          p
+            - js = "#{root}/source/js/main-#{tid}.js"
+            = js
+            = File.exist?(js)
+
