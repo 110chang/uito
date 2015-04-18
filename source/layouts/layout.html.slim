@@ -22,8 +22,8 @@ html lang="ja"
     = NEWLINE
     - page_styles = get_page_styles(current_page.data.id)
     - if page_styles.size > 0
-      - page_styles.each do |v|
-        = slls_css_link_tag v, type: nil, media: "all"
+      - page_styles.each do |style|
+        = slls_css_link_tag style, type: nil, media: "all"
         = NEWLINE
     /
     / scripts
@@ -32,7 +32,7 @@ html lang="ja"
     = NEWLINE
     /[if lt IE 9]
       = javascript_include_tag 'lib/respond.src', type: nil
-      = NEWLINE
+    = NEWLINE
     = javascript_include_tag 'lib/jquery', type: nil
     = NEWLINE
     = javascript_include_tag 'lib/jquery.easing', type: nil

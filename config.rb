@@ -88,7 +88,7 @@ helpers do
     current = default if current.nil?
   end
 
-  def get_page_styles(id=nil)
+  def get_page_styles(id=nil, choose_last=false)
     ids = id.split('-')
     names = []
     ids.size.times do |i|
@@ -98,6 +98,8 @@ helpers do
         names.push(tid)
       end
     end
+
+    names = [names.last] if choose_last
 
     return names
   end
