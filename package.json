@@ -2,6 +2,7 @@
   "name": "uito",
   "version": "0.1.0",
   "devDependencies": {
+    "async": "^0.9.0",
     "grunt": "~0.4.1",
     "grunt-bower-task": "^0.4.0",
     "grunt-contrib-jasmine": "^0.8.1",

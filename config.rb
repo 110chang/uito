@@ -88,6 +88,26 @@ helpers do
     current = default if current.nil?
   end
 
+  def scan_doc_id(ids)
+    ids.size.times do |i|
+      tid = ids.take(i + 1).join('-')
+      if File.exist?("#{file_dir}#{tid}#{ext}")
+        yield tid
+      end
+    end if block_given?
+  end
+
+  def get_cats(id)
+    cats = []
+    ids = id.split('-')
+    ids.size.times do |i|
+      tid = ids.take(i).join('-')
+      cats.push("cat-" + tid) if tid.size > 0
+    end
+
+    return cats
+  end
+
   def get_page_styles(id=nil, choose_last=false)
     ids = id.split('-')
     names = []

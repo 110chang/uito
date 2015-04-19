@@ -2,6 +2,9 @@
 / Layout
 /
 
+- doc_id = current_page.path.gsub(/\.html$/, '').split('/').join('-')
+- doc_cats = get_cats(doc_id)
+
 doctype html
 html lang="ja"
   head
@@ -20,11 +23,10 @@ html lang="ja"
     /
     = slls_css_link_tag 'com', type: nil, media: "all"
     = NEWLINE
-    - page_styles = get_page_styles(current_page.data.id)
-    - if page_styles.size > 0
-      - page_styles.each do |style|
-        = slls_css_link_tag style, type: nil, media: "all"
-        = NEWLINE
+    - page_styles = get_page_styles(doc_id)
+    - page_styles.each do |style|
+      = slls_css_link_tag style, type: nil, media: "all"
+      = NEWLINE
     /
     / scripts
     /
@@ -37,9 +39,9 @@ html lang="ja"
     = NEWLINE
     = javascript_include_tag 'lib/jquery.easing', type: nil
     = NEWLINE
-    - data_main = get_data_main(current_page.data.id)
+    - data_main = get_data_main(doc_id)
     - if build?
-      = javascript_include_tag "lib/#{data_main}", type: nil
+      = javascript_include_tag "#{data_main}", type: nil
     - else
       = javascript_include_tag 'lib/require', type: nil, :'data-main' => data_main
     = NEWLINE
@@ -48,12 +50,13 @@ html lang="ja"
     /
     = slls_favicon_tag '/img/favicon.ico', rel: "shortcut icon", type: nil
   = NEWLINE
-  body id="#{current_page.data.id}" class="cat-#{current_page.data.category}"
+  body id="doc-#{doc_id}" class="#{doc_cats.join(' ')}"
     /- if build? 
     /  = partial 'facebook_root_tags'
     #show-outline
       = partial 'header'
       article#main
+        = current_page.path.gsub(/\.html$/, '').split('/').join('-')
         = yield
       = NEWLINE
       = NEWLINE
